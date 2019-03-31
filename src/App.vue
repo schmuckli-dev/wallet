@@ -17,18 +17,34 @@
     <v-content>
       <router-view/>
     </v-content>
+
+    <!-- Notification -->
+    <v-snackbar
+      v-model="notification"
+    >
+      {{ notification_text }}
+      <v-btn
+        color="pink"
+        flat
+        @click="notification = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
   </v-app>
 </template>
 
 <script>
+import { Store } from "./store.js";
 
 export default {
   name: 'App',
-  components: {
-  },
-  data () {
-    return {
-      //
+  computed: {
+    notification(){
+      return Store.notification !== ""
+    },
+    notification_text(){
+      return Store.notification;
     }
   }
 }

@@ -8,30 +8,17 @@
         <v-btn @click="logout">Logout</v-btn>
       </v-flex>
     </v-layout>
-    <v-snackbar
-      v-model="notification"
-    >
-      {{ notification_text }}
-      <v-btn
-        color="pink"
-        flat
-        @click="notification = false"
-      >
-        Close
-      </v-btn>
-    </v-snackbar>
   </v-container>
 </template>
 
 <script>
+import { StoreMod } from "../store.js";
 import firebase from "firebase";
 
 export default {
   name: "Login",
   data(){
     return {
-      notification: false,
-      notification_text: ""
     }
   },
   computed: {
@@ -49,9 +36,9 @@ export default {
       var global_this = this;
       firebase.auth().signOut().then(function() {
         global_this.$router.replace("login");
+        StoreMod.showNotification("Logout was successful.");
       }, function(error) {
-        global_this.notification = true;
-        global_this.notification_text = "Logout not successfull. " + error.getMessage();
+        StoreMod.showNotification("Logout not successful. " + error.getMessage());
       });
     }
   }
