@@ -15,18 +15,16 @@
     </v-toolbar>
 
     <v-content>
-      <FirebaseAuth/>
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import FirebaseAuth from './components/FirebaseAuth'
 
 export default {
   name: 'App',
   components: {
-    FirebaseAuth
   },
   data () {
     return {
