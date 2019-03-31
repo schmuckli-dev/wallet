@@ -12,6 +12,7 @@
               ></v-text-field>
               <v-text-field outline
                 v-model="password"
+                type="password"
                 label="Password" required
               ></v-text-field>
             </div>
@@ -54,7 +55,7 @@ export default {
       if(this.$refs.formLogin.validate()){
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           function(){
-            this.$router.replace('home');
+            global_this.$router.replace('home');
           },
           function(){
             global_this.notification = true;
