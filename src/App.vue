@@ -41,7 +41,7 @@ export default {
   name: 'App',
   computed: {
     notification(){
-      return Store.notification !== ""
+      return Store.notification !== "";
     },
     notification_text(){
       return Store.notification;
