@@ -1,6 +1,6 @@
 <template>
   <v-container>
-      <v-form ref="formLogin" style="margin-left:auto;margin-right:auto;">
+      <v-form @submit="login" ref="formLogin" style="margin-left:auto;margin-right:auto;">
         <v-card class="form_card">
           <v-card-title primary-title>
             <div style="width:100%;">
@@ -18,7 +18,7 @@
             </div>
           </v-card-title>
           <v-card-actions right>
-            <v-btn @click="login">Login</v-btn>
+            <v-btn type="submit" flat>Login</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>

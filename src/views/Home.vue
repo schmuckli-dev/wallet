@@ -1,6 +1,13 @@
 <template>
   <v-container>
-      <h1>Hello {{ userName }}</h1>
+    <v-layout row wrap>
+      <v-flex xs12 sm9>
+        <h1>Hello {{ userName }}</h1>
+      </v-flex>
+      <v-flex xs12 sm3 style="text-align:right;">
+        <v-btn @click="logout">Logout</v-btn>
+      </v-flex>
+    </v-layout>
     <v-snackbar
       v-model="notification"
     >
@@ -23,9 +30,8 @@ export default {
   name: "Login",
   data(){
     return {
-      email: "",
-      password: "",
-      notification: false
+      notification: false,
+      notification_text: ""
     }
   },
   computed: {
@@ -36,6 +42,17 @@ export default {
       }else{
         return currentUser.displayName;
       }
+    }
+  },
+  methods: {
+    logout(){
+      var global_this = this;
+      firebase.auth().signOut().then(function() {
+        global_this.$router.replace("login");
+      }, function(error) {
+        global_this.notification = true;
+        global_this.notification_text = "Logout not successfull. " + error.getMessage();
+      });
     }
   }
 }
