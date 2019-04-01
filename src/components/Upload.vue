@@ -11,15 +11,25 @@
           type="file">
       </p>
       <p v-if="passData !== undefined">
-        <div v-if="passData !== undefined && passData.description !== ''">
-          <b>Description</b><br>
-          {{ passData.description }}
+        <v-layout row wrap>
+          <v-flex xs12 sm6>
+            <div v-if="passData !== undefined && current_logo !== ''">
+              <img :src="logoSrc" width="75%">
+            </div>
+          </v-flex>
+          <v-flex xs12 sm6 style="text-align:right;">
+            <div v-if="passData !== undefined && passData.organizationName !== ''">
+              <b>{{ passData.organizationName }}</b>
+            </div>
+          </v-flex>
+        </v-layout>
+
+        <div v-if="passData !== undefined && relevantDate !== ''">
+          <b>Date & Time</b><br>
+          {{ relevantDate }}
         </div>
         <br>
-        <div v-if="passData !== undefined && passData.organizationName !== ''">
-          <b>Organization</b><br>
-          {{ passData.organizationName }}
-        </div>
+
       </p>
     </v-card-title>
     <v-card-actions v-if="passData !== undefined">
@@ -34,13 +44,15 @@
 <script>
 import { StoreMod } from "../store.js";
 import { lightOrDark } from "../assets/js/color";
+import { getFormattedDate } from "../assets/js/date";
 var JSZip = require("jszip");
 
 export default{
   name: "Upload",
   data(){
     return {
-      passData: undefined
+      passData: undefined,
+      current_logo: undefined
     }
   },
   computed: {
@@ -54,6 +66,16 @@ export default{
     cardStyle(){
       try{
         return "background-color: " + this.passData.backgroundColor + ";color:" + this.passData.foregroundColor;
+      }catch(e){
+        return "";
+      }
+    },
+    logoSrc(){
+      return 'data:image/png;base64,' + this.current_logo;
+    },
+    relevantDate(){
+      try{
+        return getFormattedDate(this.passData.relevantDate);
       }catch(e){
         return "";
       }
@@ -77,11 +99,11 @@ export default{
                 global_this.handleJsonData(zip, zipEntry[0]);
                 break;
 
-            /*case 'logo.png':
-              handleForegroundImage(zip, zipEntry.name, $('.headerFields'));
-              break;
+              case 'logo.png':
+                global_this.handleLogo(zip, zipEntry[0]);
+                break;
 
-            case 'thumbnail.png':
+            /*case 'thumbnail.png':
               handleForegroundImage(zip, zipEntry.name, $('.primaryFields'));
               break;
 
@@ -108,8 +130,18 @@ export default{
         global_this.passData = passData;
         if(passData.eventTicket){
           //
+        } else if (passData.boardingPass){
+
         }
 
+      });
+    },
+    handleLogo(zip, name){
+      var global_this = this;
+      zip.file(name).async('base64').then(function success(content) {
+        global_this.current_logo = content;
+      }, function error(e) {
+          global_this.showNotification("There was a problem with loading the logo of the pass.");
       });
     }
   }
