@@ -1,14 +1,30 @@
 <template>
   <v-card id="upload_box">
     <v-card-title primary-title>
-      <div class="headline" style="width:100%;margin-bottom:10px;">New Ticket</div>
+      <div class="headline" style="margin-bottom:10px;" v-if="passData === undefined">
+        New Ticket
+      </div>
       <p v-if="passData === undefined">
         Upload here your .pkpass file<br>
         <input
           v-on:input="upload($event)"
           type="file">
       </p>
+      <p v-if="passData !== undefined">
+        <div v-if="passData !== undefined && passData.description !== ''">
+          <b>Description</b><br>
+          {{ passData.description }}
+        </div>
+        <br>
+        <div v-if="passData !== undefined && passData.organizationName !== ''">
+          <b>Organization</b><br>
+          {{ passData.organizationName }}
+        </div>
+      </p>
     </v-card-title>
+    <v-card-actions v-if="passData !== undefined">
+      <v-btn white flat>Add to wallet</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
 <script>
@@ -68,8 +84,17 @@ export default{
         document.getElementById("upload_box").style.backgroundColor = passData.backgroundColor;
         document.getElementById("upload_box").style.color = passData.foregroundColor;
         global_this.passData = passData;
+        if(passData.eventTicket){
+          //
+        }
+
       });
     }
   }
 }
 </script>
+<style scoped>
+div{
+  width: 100%;
+}
+</style>
