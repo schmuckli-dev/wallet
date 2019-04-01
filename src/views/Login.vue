@@ -39,6 +39,8 @@ export default {
   },
   methods: {
     login(){
+      event.preventDefault();
+      
       var global_this = this;
       if(this.$refs.formLogin.validate()){
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
@@ -50,6 +52,7 @@ export default {
             StoreMod.showNotification("The email or password is invalid.");
           })
       }
+      return false;
     }
   }
 }
