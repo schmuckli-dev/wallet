@@ -9,13 +9,7 @@
       </v-flex>
     </v-layout>
     <v-layout style="margin-top:50px;" justify-space-around row wrap>
-      <v-flex xs12 sm4>
-        <v-card>
-          <v-card-title primary-title>
-            <h2>Card Example</h2>
-          </v-card-title>
-        </v-card>
-      </v-flex>
+      <Pass />
       <v-flex xs12 sm4>
         <Upload />
       </v-flex>
@@ -25,13 +19,15 @@
 
 <script>
 import Upload from "../components/Upload";
+import Pass from "../components/Pass";
 import { StoreMod } from "../store.js";
 import firebase from "firebase";
 
 export default {
   name: "Home",
   components:{
-    Upload
+    Upload,
+    Pass
   },
   data(){
     return {

@@ -1,5 +1,5 @@
 <template>
-  <v-card id="upload_box" :style="cardStyle">
+  <v-card class="pass" id="upload_box" :style="cardStyle">
     <v-card-title primary-title>
       <div class="headline" style="margin-bottom:10px;" v-if="passData === undefined">
         New Ticket
@@ -10,27 +10,24 @@
           v-on:input="upload($event)"
           type="file">
       </p>
-      <p v-if="passData !== undefined">
-        <v-layout row wrap>
-          <v-flex xs12 sm6>
-            <div v-if="passData !== undefined && current_logo !== ''">
-              <img :src="logoSrc" width="75%">
-            </div>
-          </v-flex>
-          <v-flex xs12 sm6 style="text-align:right;">
-            <div v-if="passData !== undefined && passData.organizationName !== ''">
-              <b>{{ passData.organizationName }}</b>
-            </div>
-          </v-flex>
-        </v-layout>
-
+      <div v-if="passData !== undefined" style="width:100%;">
+        <div v-if="passData !== undefined && title !== ''">
+          <span class="headline">{{ title }}</span>
+        </div>
+        <div v-if="passData !== undefined" style="float:right;width:auto;text-align:right;">
+          <img :src="logoSrc" width="50%" v-if="passData !== undefined && current_logo !== ''" >
+          <br>
+          <span v-if="passData.organizationName !== '' && current_logo === ''">{{ passData.organizationName }}</span>
+        </div>
         <div v-if="passData !== undefined && relevantDate !== ''">
           <b>Date & Time</b><br>
           {{ relevantDate }}
         </div>
-        <br>
-
-      </p>
+        <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
+          <b>Type</b><br>
+          {{ ticketType }}
+        </div>
+      </div>
     </v-card-title>
     <v-card-actions v-if="passData !== undefined">
       <v-btn v-if="!isBackgroundLight" dark flat>Add to wallet</v-btn>
@@ -77,6 +74,32 @@ export default{
       try{
         return getFormattedDate(this.passData.relevantDate);
       }catch(e){
+        return "";
+      }
+    },
+    title(){
+      try {
+        if(this.passData.eventTicket){
+          return this.passData.eventTicket.primaryFields[0].value;
+        } else if (this.passData.boardingPass){
+          return "Boarding-Pass";
+        } else {
+          return "Other";
+        }
+      } catch (e){
+        return "";
+      }
+    },
+    ticketType(){
+      try {
+        if(this.passData.eventTicket){
+          return "Event";
+        } else if (this.passData.boardingPass){
+          return "Boarding-Pass";
+        } else {
+          return "Other";
+        }
+      } catch (e){
         return "";
       }
     }
@@ -150,5 +173,9 @@ export default{
 <style scoped>
 div{
   width: 100%;
+}
+
+#upload_box{
+  margin-top:30px;
 }
 </style>
