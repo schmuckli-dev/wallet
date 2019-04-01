@@ -1,5 +1,5 @@
 <template>
-  <v-card id="upload_box">
+  <v-card id="upload_box" :style="cardStyle">
     <v-card-title primary-title>
       <div class="headline" style="margin-bottom:10px;" v-if="passData === undefined">
         New Ticket
@@ -23,12 +23,17 @@
       </p>
     </v-card-title>
     <v-card-actions v-if="passData !== undefined">
-      <v-btn white flat>Add to wallet</v-btn>
+      <v-btn v-if="!isBackgroundLight" dark flat>Add to wallet</v-btn>
+      <v-btn v-if="isBackgroundLight" light flat>Add to wallet</v-btn>
+
+      <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>Cancel</v-btn>
+      <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>Cancel</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 <script>
 import { StoreMod } from "../store.js";
+import { lightOrDark } from "../assets/js/color";
 var JSZip = require("jszip");
 
 export default{
@@ -38,7 +43,26 @@ export default{
       passData: undefined
     }
   },
+  computed: {
+    isBackgroundLight(){
+      try{
+        return lightOrDark(this.passData.backgroundColor) == 'light';
+      }catch(e){
+        return false;
+      }
+    },
+    cardStyle(){
+      try{
+        return "background-color: " + this.passData.backgroundColor + ";color:" + this.passData.foregroundColor;
+      }catch(e){
+        return "";
+      }
+    }
+  },
   methods: {
+    resetPassData(){
+      this.passData = undefined;
+    },
     upload(e){
       var files = e.target.files;
       var global_this = this;
@@ -81,8 +105,6 @@ export default{
       zip.file(name).async('string').then(function success(content) {
         var passData = JSON.parse(content);
 
-        document.getElementById("upload_box").style.backgroundColor = passData.backgroundColor;
-        document.getElementById("upload_box").style.color = passData.foregroundColor;
         global_this.passData = passData;
         if(passData.eventTicket){
           //
