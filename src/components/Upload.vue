@@ -29,16 +29,22 @@
         </div>
       </div>
     </v-card-title>
-    <v-card-actions v-if="passData !== undefined">
-      <v-btn v-if="!isBackgroundLight" dark flat>Add to wallet</v-btn>
-      <v-btn v-if="isBackgroundLight" light flat>Add to wallet</v-btn>
+    <v-card-actions v-if="passData !== undefined && !isSavingPass">
+      <v-btn v-if="!isBackgroundLight" @click="addToWallet" dark flat>Add to wallet</v-btn>
+      <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>Add to wallet</v-btn>
 
       <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>Cancel</v-btn>
       <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>Cancel</v-btn>
     </v-card-actions>
+    <v-card-actions v-if="passData !== undefined && isSavingPass">
+      <v-progress-linear :indeterminate="true"></v-progress-linear>
+    </v-card-actions>
   </v-card>
 </template>
 <script>
+import firebase from "firebase";
+require("firebase/firestore");
+
 import { StoreMod } from "../store.js";
 import { lightOrDark } from "../assets/js/color";
 import { getFormattedDate } from "../assets/js/date";
@@ -49,7 +55,8 @@ export default{
   data(){
     return {
       passData: undefined,
-      current_logo: undefined
+      current_logo: undefined,
+      isSavingPass: false
     }
   },
   computed: {
@@ -107,6 +114,20 @@ export default{
   methods: {
     resetPassData(){
       this.passData = undefined;
+    },
+    addToWallet(){
+      var global_this = this;
+      this.isSavingPass = true;
+      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection("passes").doc().set(this.passData)
+      .then(function() {
+          this.isSavingPass = false;
+          global_this.resetPassData();
+          StoreMod.showNotification("The pass has been saved.");
+      })
+      .catch(function(error) {
+          this.isSavingPass = false;
+          StoreMod.showNotification("There was an error while saving the pass: " + error);
+      });
     },
     upload(e){
       var files = e.target.files;
