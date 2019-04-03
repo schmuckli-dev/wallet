@@ -17,5 +17,7 @@ export default{
 <style scoped>
 .pass{
   margin-top: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>

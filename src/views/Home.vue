@@ -10,9 +10,9 @@
     </v-layout>
     <v-layout style="margin-top:50px;" justify-space-around row wrap>
       <Pass />
-      <v-flex xs12 sm4>
-        <Upload />
-      </v-flex>
+      <Pass />
+      <Pass />
+      <Upload />
     </v-layout>
   </v-container>
 </template>

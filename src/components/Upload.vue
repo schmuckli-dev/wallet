@@ -1,45 +1,47 @@
 <template>
-  <v-card class="pass" id="upload_box" :style="cardStyle">
-    <v-card-title primary-title>
-      <div class="headline" style="margin-bottom:10px;" v-if="passData === undefined">
-        New Ticket
-      </div>
-      <p v-if="passData === undefined">
-        Upload here your .pkpass file<br>
-        <input
-          v-on:input="upload($event)"
-          type="file">
-      </p>
-      <div v-if="passData !== undefined" style="width:100%;">
-        <div v-if="passData !== undefined && title !== ''">
-          <span class="headline">{{ title }}</span>
+  <v-flex xs12 sm4>
+    <v-card class="pass" id="upload_box" :style="cardStyle">
+      <v-card-title primary-title>
+        <div class="headline" style="margin-bottom:10px;" v-if="passData === undefined">
+          New Ticket
         </div>
-        <div v-if="passData !== undefined" style="float:right;width:auto;text-align:right;">
-          <img :src="logoSrc" width="50%" v-if="passData !== undefined && current_logo !== ''" >
-          <br>
-          <span v-if="passData.organizationName !== '' && current_logo === ''">{{ passData.organizationName }}</span>
+        <p v-if="passData === undefined">
+          Upload here your .pkpass file<br>
+          <input
+            v-on:input="upload($event)"
+            type="file">
+        </p>
+        <div v-if="passData !== undefined" style="width:100%;">
+          <div v-if="passData !== undefined && title !== ''">
+            <span class="headline">{{ title }}</span>
+          </div>
+          <div v-if="passData !== undefined" style="float:right;width:auto;text-align:right;">
+            <img :src="logoSrc" width="50%" v-if="passData !== undefined && current_logo !== ''" >
+            <br>
+            <span v-if="passData.organizationName !== '' && current_logo === ''">{{ passData.organizationName }}</span>
+          </div>
+          <div v-if="passData !== undefined && relevantDate !== ''">
+            <b>Date & Time</b><br>
+            {{ relevantDate }}
+          </div>
+          <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
+            <b>Type</b><br>
+            {{ ticketType }}
+          </div>
         </div>
-        <div v-if="passData !== undefined && relevantDate !== ''">
-          <b>Date & Time</b><br>
-          {{ relevantDate }}
-        </div>
-        <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
-          <b>Type</b><br>
-          {{ ticketType }}
-        </div>
-      </div>
-    </v-card-title>
-    <v-card-actions v-if="passData !== undefined && !isSavingPass">
-      <v-btn v-if="!isBackgroundLight" @click="addToWallet" dark flat>Add to wallet</v-btn>
-      <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>Add to wallet</v-btn>
+      </v-card-title>
+      <v-card-actions v-if="passData !== undefined && !isSavingPass">
+        <v-btn v-if="!isBackgroundLight" @click="addToWallet" dark flat>Add to wallet</v-btn>
+        <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>Add to wallet</v-btn>
 
-      <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>Cancel</v-btn>
-      <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>Cancel</v-btn>
-    </v-card-actions>
-    <v-card-actions v-if="passData !== undefined && isSavingPass">
-      <v-progress-linear :indeterminate="true"></v-progress-linear>
-    </v-card-actions>
-  </v-card>
+        <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>Cancel</v-btn>
+        <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>Cancel</v-btn>
+      </v-card-actions>
+      <v-card-actions v-if="passData !== undefined && isSavingPass">
+        <v-progress-linear :indeterminate="true"></v-progress-linear>
+      </v-card-actions>
+    </v-card>
+  </v-flex>
 </template>
 <script>
 import firebase from "firebase";
@@ -169,7 +171,7 @@ export default{
           });
         }, function (e) {
           console.log(e.message)
-          StoreMod.showNotification(e.message);
+          StoreMod.showNotification("Cannot upload this file.");
         });
       }
     },
@@ -191,19 +193,21 @@ export default{
       var global_this = this;
       zip.file(name).async('base64').then(function success(content) {
         global_this.current_logo = content;
-      }, function error(e) {
-          global_this.showNotification("There was a problem with loading the logo of the pass.");
+      }, function error() {
+          StoreMod.showNotification("There was a problem with loading the logo of the pass.");
       });
     }
   }
 }
 </script>
 <style scoped>
-div{
+div:not(#upload_box){
   width: 100%;
 }
 
 #upload_box{
   margin-top:30px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 </style>

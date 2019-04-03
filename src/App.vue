@@ -1,12 +1,13 @@
 <template>
   <v-app>
-    <v-toolbar app>
+    <v-toolbar color="#9D6447" style="color:white;" app>
       <v-toolbar-title class="headline text-uppercase">
         <span>Wallet</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn
         flat
+        dark
         href="#"
         target="_blank"
       >
@@ -24,9 +25,9 @@
     >
       {{ notification_text }}
       <v-btn
-        color="pink"
+        color="#9D6447"
         flat
-        @click="notification = false"
+        @click="notification = ''"
       >
         Close
       </v-btn>
@@ -35,13 +36,14 @@
 </template>
 
 <script>
-import { Store } from "./store.js";
+import { Store, StoreMod } from "./store.js";
 
 export default {
   name: 'App',
   computed: {
-    notification(){
-      return Store.notification !== "";
+    notification: {
+      get() { return Store.notification !== "" },
+      set() { StoreMod.showNotification(""); }
     },
     notification_text(){
       return Store.notification;
