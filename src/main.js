@@ -12,6 +12,7 @@ firebase.initializeApp({
   apiKey: "AIzaSyDAE-MVcia1IvxvjzSTWf0LnmE28CMS3WY",                             // Auth / General Use
   authDomain: "wallet-schmuckli.firebaseapp.com",
   databaseURL: "https://wallet-schmuckli.firebaseio.com/",
+  storageBucket: "wallet-schmuckli.appspot.com",
   projectId: "wallet-schmuckli"
 });
 

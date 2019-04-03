@@ -56,7 +56,8 @@ export default{
     return {
       passData: undefined,
       current_logo: undefined,
-      isSavingPass: false
+      isSavingPass: false,
+      currentFile: undefined
     }
   },
   computed: {
@@ -118,15 +119,20 @@ export default{
     addToWallet(){
       var global_this = this;
       this.isSavingPass = true;
-      firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection("passes").doc().set(this.passData)
-      .then(function() {
-          this.isSavingPass = false;
-          global_this.resetPassData();
-          StoreMod.showNotification("The pass has been saved.");
-      })
-      .catch(function(error) {
-          this.isSavingPass = false;
+      var realDBRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes").push();
+      realDBRef.set(
+        this.passData, function(error) {
+        if (error) {
+          global_this.isSavingPass = false;
           StoreMod.showNotification("There was an error while saving the pass: " + error);
+        } else {
+          var storageFile = firebase.storage().ref("users/" + firebase.auth().currentUser.uid + "/passes/" + realDBRef.key + ".pkpass");
+          storageFile.put(global_this.currentFile).then(function(snapshot) {
+            global_this.isSavingPass = false;
+            global_this.resetPassData();
+            StoreMod.showNotification("The pass has been saved.");
+          });
+        }
       });
     },
     upload(e){
@@ -136,6 +142,7 @@ export default{
       console.log(files);
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
+        this.currentFile = file;
         JSZip.loadAsync(file).then(function(zip) {
           Object.entries(zip.files).forEach(function(zipEntry){
             switch (zipEntry[0]) {
