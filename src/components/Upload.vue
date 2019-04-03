@@ -153,7 +153,6 @@ export default{
       var files = e.target.files;
       var global_this = this;
 
-      console.log(files);
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
         this.currentFile = file;
@@ -181,8 +180,7 @@ export default{
               break;*/
             }
           });
-        }, function (e) {
-          console.log(e.message)
+        }, function () {
           StoreMod.showNotification("Cannot upload this file.");
         });
       }
@@ -196,7 +194,7 @@ export default{
         if(passData.eventTicket){
           //
         } else if (passData.boardingPass){
-
+          //
         }
 
       });
