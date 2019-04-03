@@ -2,31 +2,40 @@
   <v-card class="pass" :style="cardStyle">
     <v-card-title primary-title>
       <div style="width:100%;">
-        <div :style="logoSrc" style="width:100%;height:100px;
-        -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="logo !== ''"></div>
-        <div style="float:right;width:auto;text-align:right;">
+        <div class="headerCard" @click="isDetailOpen = !isDetailOpen">
+          <div :style="logoSrc" style="width:100%;height:100px;
+          -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+        mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="logo !== ''"></div>
+          <div style="float:right;width:auto;text-align:right;">
 
-          <br>
-          <span v-if="organization !== '' && logo === ''">{{ organization }}</span>
+            <br>
+            <span v-if="organization !== '' && logo === ''">{{ organization }}</span>
+          </div>
+          <div class="headline" style="margin-bottom:10px;">
+            {{ title }}
+          </div>
         </div>
-        <div class="headline" style="margin-bottom:10px;">
-          {{ title }}
-        </div>
-        <div v-if="passData !== undefined && relevantDate !== ''">
-          <b>Date & Time</b><br>
-          {{ relevantDate }}
-        </div>
-        <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
-          <b>Type</b><br>
-          {{ ticketType }}
-        </div>
+        <slide-up-down :active="isDetailOpen" :duration="300">
+          <div v-if="date !== ''">
+            <b>Date & Time</b><br>
+            {{ date }}
+          </div>
+          <div style="margin-top:10px;" v-if="type !== ''">
+            <b>Type</b><br>
+            {{ type }}
+          </div>
+        </slide-up-down>
       </div>
     </v-card-title>
   </v-card>
 </template>
 
 <script>
+import Vue from "vue";
+import SlideUpDown from 'vue-slide-up-down';
+
+Vue.component('slide-up-down', SlideUpDown)
+
 export default{
   name: "Pass",
   props:{
@@ -37,6 +46,11 @@ export default{
     backgroundColor: String,
     foregroundColor: String,
     organization: String
+  },
+  data(){
+    return {
+      isDetailOpen: false
+    }
   },
   computed: {
     cardStyle(){
@@ -59,8 +73,10 @@ export default{
   margin-left: 10px;
   margin-right: 10px;
 }
-
 .pass_inner{
   width: 100%;
+}
+.headerCard{
+  cursor: pointer;
 }
 </style>
