@@ -1,6 +1,6 @@
 <template>
   <v-layout style="margin-top:50px;" justify-space-around row wrap>
-    <v-flex xs12 sm4 md3 v-for="pass in passes" :key="pass.title">
+    <v-flex xs12 sm4 md3 v-for="pass in passes" :key="pass.id">
       <Pass
       :title="pass.title"
       :type="pass.type"

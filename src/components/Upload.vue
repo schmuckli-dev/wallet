@@ -22,7 +22,7 @@
           </div>
           <div v-if="passData !== undefined && relevantDate !== ''">
             <b>Date & Time</b><br>
-            {{ relevantDate }}
+            {{ relevantDateFormatted }}
           </div>
           <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
             <b>Type</b><br>
@@ -80,24 +80,61 @@ export default{
     logoSrc(){
       return 'data:image/png;base64,' + this.current_logo;
     },
+    relevantDateFormatted(){
+      return getFormattedDate(this.relevantDate);
+    },
     relevantDate(){
       try{
-        return getFormattedDate(this.passData.relevantDate);
+        if(this.passData.eventTicket){ //If event ticket
+          return new Date(this.passData.relevantDate);
+        } else if (this.passData.boardingPass){ //If boarding pass
+          //Try to fetch the time
+          if(this.passData.relevantDate !== undefined){
+            return new Date(this.passData.relevantDate);
+
+            //For Swiss Airlines passes
+          } else if (this.passData.boardingPass.auxiliaryFields && this.passData.boardingPass.auxiliaryFields[1] && this.passData.boardingPass.auxiliaryFields[1].value != undefined
+          && this.passData.boardingPass.auxiliaryFields && this.passData.boardingPass.auxiliaryFields[2] && this.passData.boardingPass.auxiliaryFields[2].value != undefined){
+            return new Date(this.passData.boardingPass.auxiliaryFields[1].value + " " + this.passData.boardingPass.auxiliaryFields[2].value);
+          } else {
+            return new Date();
+          }
+        } else {
+          return new Date();
+        }
       }catch(e){
-        return "";
+        console.log(e);
+        return new Date();
       }
     },
     title(){
       try {
-        if(this.passData.eventTicket){
+        if(this.passData.eventTicket){ //If event ticket
           return this.passData.eventTicket.primaryFields[0].value;
-        } else if (this.passData.boardingPass){
-          return "Boarding-Pass";
+        } else if (this.passData.boardingPass){ //If boarding pass
+          if(this.passData.boardingPass.transitType === "PKTransitTypeAir"){ //If Airplane
+            return this.passData.boardingPass.primaryFields[0].value + " ✈ " + this.passData.boardingPass.primaryFields[1].value;
+          } else { //All other transports
+            return this.passData.boardingPass.primaryFields[0].value + " → " + this.passData.boardingPass.primaryFields[1].value;
+          }
         } else {
           return "Other";
         }
       } catch (e){
         return "";
+      }
+    },
+    fields(){
+      try {
+        if(this.passData.eventTicket){
+          return this.passData.eventTicket;
+        } else if (this.passData.boardingPass){
+          return this.passData.boardingPass;
+        } else {
+          return {};
+        }
+      } catch (e){
+        return {};
       }
     },
     ticketType(){
@@ -126,10 +163,11 @@ export default{
         title: this.title,
         logo: this.current_logo,
         type: this.ticketType,
-        date: this.relevantDate,
+        date: this.relevantDate.getTime(),
         backgroundColor: this.passData.backgroundColor,
         foregroundColor: this.passData.foregroundColor,
-        organization: this.passData.organizationName
+        organization: this.passData.organizationName,
+        fields: this.fields
       };
 
       var realDBRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes").push();

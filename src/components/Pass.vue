@@ -18,7 +18,7 @@
         <slide-up-down :active="isDetailOpen" :duration="300">
           <div v-if="date !== ''">
             <b>Date & Time</b><br>
-            {{ date }}
+            {{ formattedDate }}
           </div>
           <div style="margin-top:10px;" v-if="type !== ''">
             <b>Type</b><br>
@@ -34,13 +34,15 @@
 import Vue from "vue";
 import SlideUpDown from 'vue-slide-up-down';
 
+import { getFormattedDate } from "../assets/js/date";
+
 Vue.component('slide-up-down', SlideUpDown)
 
 export default{
   name: "Pass",
   props:{
     title: String,
-    date: String,
+    date: Number,
     type: String,
     logo: String,
     backgroundColor: String,
@@ -63,6 +65,9 @@ export default{
     logoSrc(){
       return "background-image:url(data:image/png;base64," + this.logo + ");background-size:cover;background-repeat:no-repeat;";
     },
+    formattedDate(){
+      return getFormattedDate(this.date);
+    }
   }
 }
 </script>
