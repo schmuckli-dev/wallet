@@ -121,15 +121,27 @@ export default{
     addToWallet(){
       var global_this = this;
       this.isSavingPass = true;
+
+      var saveData = {
+        title: this.title,
+        logo: this.current_logo,
+        type: this.ticketType,
+        date: this.relevantDate,
+        backgroundColor: this.passData.backgroundColor,
+        foregroundColor: this.passData.foregroundColor,
+        organization: this.passData.organizationName
+      };
+
       var realDBRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes").push();
       realDBRef.set(
-        this.passData, function(error) {
+        saveData, function(error) {
         if (error) {
           global_this.isSavingPass = false;
           StoreMod.showNotification("There was an error while saving the pass: " + error);
         } else {
+          //Store the untouched .pkpass file to the storage bucket.
           var storageFile = firebase.storage().ref("users/" + firebase.auth().currentUser.uid + "/passes/" + realDBRef.key + ".pkpass");
-          storageFile.put(global_this.currentFile).then(function(snapshot) {
+          storageFile.put(global_this.currentFile).then(function() {
             global_this.isSavingPass = false;
             global_this.resetPassData();
             StoreMod.showNotification("The pass has been saved.");

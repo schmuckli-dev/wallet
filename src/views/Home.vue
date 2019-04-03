@@ -8,18 +8,14 @@
         <v-btn @click="logout">Logout</v-btn>
       </v-flex>
     </v-layout>
-    <v-layout style="margin-top:50px;" justify-space-around row wrap>
-      <Pass />
-      <Pass />
-      <Pass />
-      <Upload />
-    </v-layout>
+    <Passes />
+    <Upload />
   </v-container>
 </template>
 
 <script>
 import Upload from "../components/Upload";
-import Pass from "../components/Pass";
+import Passes from "../components/Passes";
 import { StoreMod } from "../store.js";
 import firebase from "firebase";
 
@@ -27,7 +23,7 @@ export default {
   name: "Home",
   components:{
     Upload,
-    Pass
+    Passes
   },
   data(){
     return {
