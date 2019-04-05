@@ -16,14 +16,18 @@
           </div>
         </div>
         <slide-up-down :active="isDetailOpen" :duration="300">
-          <div v-if="date !== ''">
-            <b>Date & Time</b><br>
-            {{ formattedDate }}
-          </div>
-          <div style="margin-top:10px;" v-if="type !== ''">
-            <b>Type</b><br>
-            {{ type }}
-          </div>
+          <v-layout style="margin-top:20px;" row>
+            <v-flex xs6 v-if="date !== ''">
+              <b>Date & Time</b><br>
+              {{ formattedDate }}
+            </v-flex>
+            <v-flex xs6 v-if="type !== ''">
+              <b>Type</b><br>
+              {{ type }}
+            </v-flex>
+          </v-layout>
+          <v-btn v-if="isBackgroundLight" style="float:right;" light flat @click="openPass">Show pass</v-btn>
+          <v-btn v-if="!isBackgroundLight" style="float:right;" dark flat @click="openPass">Show pass</v-btn>
         </slide-up-down>
       </div>
     </v-card-title>
@@ -33,6 +37,8 @@
 <script>
 import Vue from "vue";
 import SlideUpDown from 'vue-slide-up-down';
+import { lightOrDark } from "../assets/js/color";
+import { StoreMod } from "../store.js";
 
 import { getFormattedDate } from "../assets/js/date";
 
@@ -41,6 +47,7 @@ Vue.component('slide-up-down', SlideUpDown)
 export default{
   name: "Pass",
   props:{
+    id: String,
     title: String,
     date: Number,
     type: String,
@@ -55,6 +62,13 @@ export default{
     }
   },
   computed: {
+    isBackgroundLight(){
+      try{
+        return lightOrDark(this.backgroundColor) == 'light';
+      }catch(e){
+        return false;
+      }
+    },
     cardStyle(){
       try{
         return "background-color: " + this.backgroundColor + ";color:" + this.foregroundColor;
@@ -67,6 +81,12 @@ export default{
     },
     formattedDate(){
       return getFormattedDate(this.date);
+    }
+  },
+  methods: {
+    openPass(){
+      StoreMod.setCurrentPass(this.id);
+      this.$router.replace("pass");
     }
   }
 }

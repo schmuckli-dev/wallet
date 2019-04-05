@@ -4,6 +4,7 @@ import Router from 'vue-router';
 
 import Home from '@/views/Home';
 import Login from '@/views/Login';
+import Detail from '@/views/Detail';
 //import SignUp from '@/views/SignUp';
 
 Vue.use(Router);
@@ -22,6 +23,14 @@ const router = new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/pass',
+      name: 'Pass',
+      component: Detail,
+      meta: {
+        requiresAuth: true
+      }
     },/*
     {
       path: '/sign-up',
