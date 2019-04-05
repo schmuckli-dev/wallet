@@ -1,38 +1,42 @@
 <template>
   <v-container>
     <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
-    <v-card class="pass" :style="cardStyle">
-      <v-card-title primary-title>
-        <div style="width:100%;">
-          <div class="headerCard">
-            <div :style="logoSrc" style="width:100%;height:100px;
-            -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-          mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="data.logo !== ''"></div>
-            <div style="float:right;width:auto;text-align:right;">
+    <v-layout justify-space-around row wrap>
+      <v-flex xs12 sm6 md4>
+        <v-card class="pass" :style="cardStyle">
+          <v-card-title primary-title>
+            <div style="width:100%;">
+              <div class="headerCard">
+                <div :style="logoSrc" style="width:100%;height:100px;
+                -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+              mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="data.logo !== ''"></div>
+                <div style="float:right;width:auto;text-align:right;">
 
-              <br>
-              <span v-if="data.organization !== '' && data.logo === ''">{{ data.organization }}</span>
+                  <br>
+                  <span v-if="data.organization !== '' && data.logo === ''">{{ data.organization }}</span>
+                </div>
+                <div class="headline" style="margin-bottom:10px;">
+                  {{ data.title }}
+                </div>
+              </div>
+              <v-layout style="margin-top:20px;" row>
+                <v-flex xs6 v-if="data.date !== ''">
+                  <b>Date &amp; Time</b><br>
+                  {{ formattedDate }}
+                </v-flex>
+                <v-flex xs6 v-if="data.type !== ''">
+                  <b>Type</b><br>
+                  {{ data.type }}
+                </v-flex>
+              </v-layout>
+              <div style="text-align:center;margin-top:40px;">
+                <canvas id="barcode" style="width:200px;"></canvas>
+              </div>
             </div>
-            <div class="headline" style="margin-bottom:10px;">
-              {{ data.title }}
-            </div>
-          </div>
-          <v-layout style="margin-top:20px;" row>
-            <v-flex xs6 v-if="data.date !== ''">
-              <b>Date &amp; Time</b><br>
-              {{ formattedDate }}
-            </v-flex>
-            <v-flex xs6 v-if="data.type !== ''">
-              <b>Type</b><br>
-              {{ data.type }}
-            </v-flex>
-          </v-layout>
-          <div style="text-align:center;margin-top:40px;">
-            <canvas id="barcode" style="width:200px;"></canvas>
-          </div>
-        </div>
-      </v-card-title>
-    </v-card>
+          </v-card-title>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
