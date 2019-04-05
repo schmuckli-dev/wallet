@@ -91,7 +91,11 @@ export default {
 
     },
     openNew(){
-      this.$router.replace("new");
+      if(navigator.onLine){
+        this.$router.replace("new");
+      } else {
+        StoreMod.showNotification("You only can add passes, when you are online.");
+      }
     },
     logout(){
       var global_this = this;

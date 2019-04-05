@@ -44,7 +44,7 @@ export default{
     backgroundColor: String,
     foregroundColor: String,
     organization: String,
-    full: String
+    full: Object
   },
   data(){
     return {

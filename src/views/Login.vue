@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-form @submit="login" ref="formLogin" style="margin-left:auto;margin-right:auto;">
+    <v-form @submit="login($event)" ref="formLogin" style="margin-left:auto;margin-right:auto;">
       <v-card class="form_card">
         <v-card-title primary-title>
           <div style="width:100%;">
@@ -38,9 +38,9 @@ export default {
     }
   },
   methods: {
-    login(){
+    login(event){
       event.preventDefault();
-      
+
       var global_this = this;
       if(this.$refs.formLogin.validate()){
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(

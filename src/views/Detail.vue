@@ -35,16 +35,51 @@
                 </div>
               </div>
             </v-card-title>
+            <v-card-actions style="float:right;">
+              <v-btn v-if="isOnline" @click="deletePass" light flat><v-icon style="margin-right:10px;">delete</v-icon> delete</v-btn>
+            </v-card-actions>
           </v-card>
         </v-flex>
       </v-layout>
     </v-slide-y-transition>
+    <!-- Delete dialog -->
+    <v-dialog
+      v-model="dialogDelete"
+      width="500"
+    >
+      <v-card>
+        <v-card-title
+          class="headline lighten-2"
+          primary-title
+        >
+          Delete this pass?
+        </v-card-title>
+
+        <v-card-text>
+          Do you really want to delete this pass?
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            flat
+            @click="deleteConfirm"
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script>
 import { Store, StoreMod } from "./../store.js";
+import { lightOrDark } from "../assets/js/color";
 import bwipjs from 'bwip-js';
+import firebase from "firebase";
 
 import { getFormattedDate } from "../assets/js/date";
 
@@ -54,10 +89,18 @@ export default {
     return {
       id: "",
       data: {},
-      show: false
+      show: false,
+      dialogDelete: false
     }
   },
   computed: {
+    isBackgroundLight(){
+      try{
+        return lightOrDark(this.data.backgroundColor) == 'light';
+      }catch(e){
+        return false;
+      }
+    },
     cardStyle(){
       try{
         return "background-color: " + this.data.backgroundColor + ";color:" + this.data.foregroundColor;
@@ -99,6 +142,22 @@ export default {
         }
       }
     },
+    deletePass(){
+      this.dialogDelete = true;
+    },
+    deleteConfirm(){
+      this.dialogDelete = false;
+      var global_this = this;
+      //Delete the pass
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).set(null, function (error) {
+        if (error) {
+          StoreMod.showNotification("There was an error while deleting the app.");
+        } else {
+          StoreMod.showNotification("The pass has been deleted");
+          global_this.$router.replace("home");
+        }
+      });
+    },
     renderQrCode(){
       var type = "qrcode";
       switch(this.data.barcode.format){
@@ -124,6 +183,9 @@ export default {
               StoreMod.showNotification("There was an error while creating the barcode");
             }
         });
+    },
+    isOnline(){
+      return navigator.onLine;
     },
     back(){
       StoreMod.setCurrentPass("");

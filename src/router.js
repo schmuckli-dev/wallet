@@ -38,7 +38,8 @@ const router = new Router({
       name: 'New',
       component: New,
       meta: {
-        requiresAuth: true
+        requiresAuth: true,
+        requiresOnline: true
       }
     },/*
     {
@@ -60,9 +61,11 @@ const router = new Router({
 router.beforeEach((to, from, next) => {
   const currentUser = firebase.auth().currentUser;
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const requiresOnline = to.matched.some(record => record.meta.requiresOnline);
 
   if (requiresAuth && !currentUser) next('login');
   else if (!requiresAuth && currentUser) next('home');
+  else if (requiresOnline && !navigator.onLine) next('home');
   else next();
 });
 
