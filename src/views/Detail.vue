@@ -42,7 +42,6 @@
 
 <script>
 import { Store, StoreMod } from "./../store.js";
-import firebase from "firebase";
 import bwipjs from 'bwip-js';
 
 import { getFormattedDate } from "../assets/js/date";
@@ -82,18 +81,13 @@ export default {
         StoreMod.showNotification("Please select a pass.");
         this.$router.replace("home");
       } else {
-        var passRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/passes/' + this.id);
-        passRef.on('value', function(snapshot) {
-          try {
-            global_this.passes = [];
-            var data = snapshot.val();
-            global_this.data = data;
-            global_this.renderQrCode();
-          }catch(e){
-            StoreMod.showNotification("This pass is not available.");
-            global_this.$router.replace("home");
-          }
-        });
+        try{
+          global_this.data = Store.currentPass;
+          global_this.renderQrCode();
+        }catch(e){
+          StoreMod.showNotification("This pass is not available.");
+          global_this.$router.replace("home");
+        }
       }
     },
     renderQrCode(){

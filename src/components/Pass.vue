@@ -43,7 +43,8 @@ export default{
     logo: String,
     backgroundColor: String,
     foregroundColor: String,
-    organization: String
+    organization: String,
+    full: String
   },
   data(){
     return {
@@ -74,7 +75,7 @@ export default{
   },
   methods: {
     openPass(){
-      StoreMod.setCurrentPass(this.id);
+      StoreMod.setCurrentPass(this.full);
       this.$router.replace("pass");
     }
   },
