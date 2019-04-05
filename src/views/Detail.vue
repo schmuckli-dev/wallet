@@ -19,7 +19,7 @@
           </div>
           <v-layout style="margin-top:20px;" row>
             <v-flex xs6 v-if="data.date !== ''">
-              <b>Date & Time</b><br>
+              <b>Date &amp; Time</b><br>
               {{ formattedDate }}
             </v-flex>
             <v-flex xs6 v-if="data.type !== ''">
@@ -27,6 +27,9 @@
               {{ data.type }}
             </v-flex>
           </v-layout>
+          <div style="text-align:center;margin-top:40px;">
+            <canvas id="barcode" style="width:200px;"></canvas>
+          </div>
         </div>
       </v-card-title>
     </v-card>
@@ -36,6 +39,7 @@
 <script>
 import { Store, StoreMod } from "./../store.js";
 import firebase from "firebase";
+import bwipjs from 'bwip-js';
 
 import { getFormattedDate } from "../assets/js/date";
 
@@ -71,7 +75,7 @@ export default {
 
       this.id = Store.currentPass;
       if (this.id === "") { //Redirect to home if loaded without id
-        StoreMod.showNotification("Please select a pass before entering this site.");
+        StoreMod.showNotification("Please select a pass.");
         this.$router.replace("home");
       } else {
         var passRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/passes/' + this.id);
@@ -80,12 +84,39 @@ export default {
             global_this.passes = [];
             var data = snapshot.val();
             global_this.data = data;
+            global_this.renderQrCode();
           }catch(e){
             StoreMod.showNotification("This pass is not available.");
-            this.$router.replace("home");
+            global_this.$router.replace("home");
           }
         });
       }
+    },
+    renderQrCode(){
+      var type = "qrcode";
+      switch(this.data.barcode.format){
+        case "PKBarcodeFormatAztec":
+          type = "azteccode"
+          break;
+        case "PKBarcodeFormatQR":
+          type = "qrcode";
+          break;
+        default:
+          //Detect new formats
+          break;
+      }
+      bwipjs('barcode', {
+            bcid:        type,       // Barcode type
+            text:        this.data.barcode.message,    // Text to encode
+            scale:       3,               // 3x scaling factor
+            /*height:      20,*/              // Bar height, in millimeters
+            includetext: true,            // Show human-readable text
+            textxalign:  'center',        // Always good to set this
+        }, function (err) {
+            if (err) {
+              StoreMod.showNotification("There was an error while creating the barcode");
+            }
+        });
     },
     back(){
       StoreMod.setCurrentPass("");

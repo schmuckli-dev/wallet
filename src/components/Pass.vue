@@ -18,7 +18,7 @@
         <slide-up-down :active="isDetailOpen" :duration="300">
           <v-layout style="margin-top:20px;" row>
             <v-flex xs6 v-if="date !== ''">
-              <b>Date & Time</b><br>
+              <b>Date &amp; Time</b><br>
               {{ formattedDate }}
             </v-flex>
             <v-flex xs6 v-if="type !== ''">

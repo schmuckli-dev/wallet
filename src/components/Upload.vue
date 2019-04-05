@@ -21,7 +21,7 @@
             <span v-if="passData.organizationName !== '' && current_logo === ''">{{ passData.organizationName }}</span>
           </div>
           <div v-if="passData !== undefined && relevantDate !== ''">
-            <b>Date & Time</b><br>
+            <b>Date &amp; Time</b><br>
             {{ relevantDateFormatted }}
           </div>
           <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
@@ -103,7 +103,6 @@ export default{
           return new Date();
         }
       }catch(e){
-        console.log(e);
         return new Date();
       }
     },
@@ -167,7 +166,8 @@ export default{
         backgroundColor: this.passData.backgroundColor,
         foregroundColor: this.passData.foregroundColor,
         organization: this.passData.organizationName,
-        fields: this.fields
+        fields: this.fields,
+        barcode: this.passData.barcode
       };
 
       var realDBRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes").push();
