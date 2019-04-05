@@ -1,13 +1,5 @@
 <template>
   <v-container>
-    <v-layout row wrap>
-      <v-flex xs12 sm9>
-        <h1>Hello {{ userName }}</h1>
-      </v-flex>
-      <v-flex xs12 sm3 style="text-align:right;">
-        <v-btn @click="logout">Logout</v-btn>
-      </v-flex>
-    </v-layout>
     <Passes />
     <Upload />
   </v-container>
@@ -16,39 +8,12 @@
 <script>
 import Upload from "../components/Upload";
 import Passes from "../components/Passes";
-import { StoreMod } from "../store.js";
-import firebase from "firebase";
 
 export default {
   name: "Home",
   components:{
     Upload,
     Passes
-  },
-  data(){
-    return {
-    }
-  },
-  computed: {
-    userName(){
-      var currentUser = firebase.auth().currentUser;
-      if(currentUser.displayName == undefined){
-        return currentUser.email;
-      }else{
-        return currentUser.displayName;
-      }
-    }
-  },
-  methods: {
-    logout(){
-      var global_this = this;
-      firebase.auth().signOut().then(function() {
-        global_this.$router.replace("login");
-        StoreMod.showNotification("Logout was successful.");
-      }, function(error) {
-        StoreMod.showNotification("Logout not successful. " + error.getMessage());
-      });
-    }
   }
 }
 </script>

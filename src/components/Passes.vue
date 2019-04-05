@@ -1,5 +1,5 @@
 <template>
-  <v-layout style="margin-top:50px;" justify-space-around row wrap>
+  <v-layout justify-space-around row wrap>
     <v-progress-circular
       :size="70"
       :width="7"
