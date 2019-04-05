@@ -1,7 +1,14 @@
 <template>
   <v-layout style="margin-top:50px;" justify-space-around row wrap>
-    <v-flex xs12 sm4 md3 v-for="pass in passes" :key="pass.id">
+    <v-progress-circular
+      :size="70"
+      :width="7"
+      color="#9D6447" style="margin-top:30px;"
+      indeterminate v-if="!loaded"
+    ></v-progress-circular>
+    <v-flex xs12 sm4 md3 v-for="(pass, index) in passes" :key="pass.id">
       <Pass
+      :index="index"
       :id="pass.id"
       :title="pass.title"
       :type="pass.type"
@@ -24,7 +31,8 @@ export default {
   name: "Passes",
   data() {
     return {
-      passes: []
+      passes: [],
+      loaded: false
     }
   },
   mounted(){
@@ -44,6 +52,7 @@ export default {
           data.forEach(function(pass){
             global_this.passes.push(Object.assign(pass[1], {id: pass[0]}));
           });
+          global_this.loaded = true;
         }catch(e){
           StoreMod.showNotification("There are no passes stored.");
         }

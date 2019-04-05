@@ -1,37 +1,25 @@
 <template>
-  <v-card class="pass" :style="cardStyle" @click="openPass">
-    <v-card-title primary-title>
-      <div style="width:100%;">
-        <div class="headerCard">
-          <div :style="logoSrc" style="width:100%;height:100px;
-          -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-        mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="logo !== ''"></div>
-          <div style="float:right;width:auto;text-align:right;">
+  <v-slide-y-transition>
+    <v-card class="pass" :style="cardStyle" v-show="show" @click="openPass">
+      <v-card-title primary-title>
+        <div style="width:100%;">
+          <div class="headerCard">
+            <div :style="logoSrc" style="width:100%;height:100px;
+            -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+          mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="logo !== ''"></div>
+            <div style="float:right;width:auto;text-align:right;">
 
-            <br>
-            <span v-if="organization !== '' && logo === ''">{{ organization }}</span>
-          </div>
-          <div class="headline" :title="title" style="margin-bottom:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
-            {{ title }}
+              <br>
+              <span v-if="organization !== '' && logo === ''">{{ organization }}</span>
+            </div>
+            <div class="headline" :title="title" style="margin-bottom:10px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">
+              {{ title }}
+            </div>
           </div>
         </div>
-        <!--<slide-up-down :active="isDetailOpen" :duration="300">
-          <v-layout style="margin-top:20px;" row>
-            <v-flex xs6 v-if="date !== ''">
-              <b>Date &amp; Time</b><br>
-              {{ formattedDate }}
-            </v-flex>
-            <v-flex xs6 v-if="type !== ''">
-              <b>Type</b><br>
-              {{ type }}
-            </v-flex>
-          </v-layout>
-          <v-btn v-if="isBackgroundLight" style="float:right;" light flat >Show pass</v-btn>
-          <v-btn v-if="!isBackgroundLight" style="float:right;" dark flat @click="openPass">Show pass</v-btn>
-        </slide-up-down>-->
-      </div>
-    </v-card-title>
-  </v-card>
+      </v-card-title>
+    </v-card>
+  </v-slide-y-transition>
 </template>
 
 <script>
@@ -47,6 +35,7 @@ Vue.component('slide-up-down', SlideUpDown)
 export default{
   name: "Pass",
   props:{
+    index: Number,
     id: String,
     title: String,
     date: Number,
@@ -58,7 +47,7 @@ export default{
   },
   data(){
     return {
-      isDetailOpen: false
+      show: false
     }
   },
   computed: {
@@ -88,6 +77,13 @@ export default{
       StoreMod.setCurrentPass(this.id);
       this.$router.replace("pass");
     }
+  },
+  mounted(){
+    //Fade animation effect on load
+    var global_this = this;
+    setTimeout(function(){
+      global_this.show = true;
+    }, 80 * this.index);
   }
 }
 </script>
