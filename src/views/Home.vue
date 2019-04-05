@@ -1,18 +1,15 @@
 <template>
   <v-container>
     <Passes />
-    <Upload />
   </v-container>
 </template>
 
 <script>
-import Upload from "../components/Upload";
 import Passes from "../components/Passes";
 
 export default {
   name: "Home",
   components:{
-    Upload,
     Passes
   }
 }

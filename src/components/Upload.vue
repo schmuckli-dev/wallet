@@ -2,15 +2,18 @@
   <v-flex xs12 sm4>
     <v-card class="pass" id="upload_box" :style="cardStyle">
       <v-card-title primary-title>
-        <div class="headline" style="margin-bottom:10px;" v-if="passData === undefined">
-          New Ticket
-        </div>
-        <p v-if="passData === undefined">
-          Upload here your .pkpass file<br>
-          <input
+        <div v-if="passData === undefined" style="text-align:center;">
+          <div class="headline" style="margin-bottom:10px;">
+            Upload a new pass
+          </div>
+          <v-btn @click='openFileDialog'>
+            <v-icon style="margin-right:10px;">cloud_upload</v-icon> Upload
+          </v-btn>
+          <input id="upload_file" style="display:none;"
             v-on:input="upload($event)"
             type="file">
-        </p>
+          <p>Please upload a .pkpass file here.</p>
+        </div>
         <div v-if="passData !== undefined" style="width:100%;">
           <div v-if="passData !== undefined && title !== ''">
             <span class="headline">{{ title }}</span>
@@ -181,11 +184,15 @@ export default{
           var storageFile = firebase.storage().ref("users/" + firebase.auth().currentUser.uid + "/passes/" + realDBRef.key + ".pkpass");
           storageFile.put(global_this.currentFile).then(function() {
             global_this.isSavingPass = false;
+            global_this.$router.replace("home");
             global_this.resetPassData();
             StoreMod.showNotification("The pass has been saved.");
           });
         }
       });
+    },
+    openFileDialog(){
+      document.getElementById("upload_file").click();
     },
     upload(e){
       var files = e.target.files;
@@ -227,14 +234,7 @@ export default{
       var global_this = this;
       zip.file(name).async('string').then(function success(content) {
         var passData = JSON.parse(content);
-
         global_this.passData = passData;
-        if(passData.eventTicket){
-          //
-        } else if (passData.boardingPass){
-          //
-        }
-
       });
     },
     handleLogo(zip, name){

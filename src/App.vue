@@ -48,6 +48,9 @@
         Close
       </v-btn>
     </v-snackbar>
+    <v-btn fab dark color="#9D6447" fixed right bottom>
+        <v-icon @click="openNew" dark>add</v-icon>
+    </v-btn>
   </v-app>
 </template>
 
@@ -87,6 +90,9 @@ export default {
     openSettings(){
 
     },
+    openNew(){
+      this.$router.replace("new");
+    },
     logout(){
       var global_this = this;
       firebase.auth().signOut().then(function() {
@@ -100,7 +106,7 @@ export default {
   watch:{
     //$route (to, from){
     $route (){ //Call everytime when route changes
-        this.currentUser = firebase.auth().currentUser;
+      this.currentUser = firebase.auth().currentUser;
     }
   }
 }
