@@ -93,7 +93,7 @@ export default {
   },
   methods: {
     openSettings(){
-
+      this.$router.replace("settings");
     },
     openNew(){
       if(navigator.onLine){
@@ -103,13 +103,17 @@ export default {
       }
     },
     logout(){
-      var global_this = this;
-      firebase.auth().signOut().then(function() {
-        global_this.$router.replace("login");
-        StoreMod.showNotification("Logout was successful.");
-      }, function(error) {
-        StoreMod.showNotification("Logout not successful. " + error.getMessage());
-      });
+      if(navigator.onLine){
+        var global_this = this;
+        firebase.auth().signOut().then(function() {
+          global_this.$router.replace("login");
+          StoreMod.showNotification("Logout was successful.");
+        }, function(error) {
+          StoreMod.showNotification("Logout not successful. " + error.getMessage());
+        });
+      } else {
+        StoreMod.showNotification("Sorry, you can't logout while you're offline.");
+      }
     }
   },
   watch:{
@@ -131,5 +135,9 @@ footer{
 }
 footer a{
   color:grey;
+}
+
+h1{
+  margin-bottom: 20px;
 }
 </style>

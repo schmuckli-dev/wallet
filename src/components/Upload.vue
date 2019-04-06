@@ -41,7 +41,8 @@
         <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>Cancel</v-btn>
       </v-card-actions>
       <v-card-actions v-if="passData !== undefined && isSavingPass">
-        <v-progress-linear :indeterminate="true"></v-progress-linear>
+        <v-progress-linear :indeterminate="true" v-if="!isBackgroundLight" color="white"></v-progress-linear>
+        <v-progress-linear :indeterminate="true" v-if="isBackgroundLight" color="black"></v-progress-linear>
       </v-card-actions>
     </v-card>
   </v-flex>

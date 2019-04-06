@@ -65,6 +65,13 @@
           <v-spacer></v-spacer>
           <v-btn
             flat
+            @click="dialogDelete = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            flat
+            color="red"
             @click="deleteConfirm"
           >
             Delete
@@ -143,7 +150,11 @@ export default {
       }
     },
     deletePass(){
-      this.dialogDelete = true;
+      if(navigator.onLine){
+        this.dialogDelete = true;
+      } else {
+        StoreMod.showNotification("You can't delete a pass while you're offline.");
+      }
     },
     deleteConfirm(){
       this.dialogDelete = false;

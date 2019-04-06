@@ -43,14 +43,19 @@ export default {
 
       var global_this = this;
       if(this.$refs.formLogin.validate()){
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
-          function(){
-            global_this.$router.replace('home');
-            StoreMod.showNotification("Login successful.");
-          },
-          function(){
-            StoreMod.showNotification("The email or password is invalid.");
-          })
+        if(navigator.onLine){
+          firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+            function(){
+              global_this.$router.replace('home');
+              StoreMod.showNotification("Login successful.");
+            },
+            function(){
+              StoreMod.showNotification("The email or password is invalid.");
+            }
+          );
+        } else {
+          StoreMod.showNotification("You can't login while you're offline.");
+        }
       }
       return false;
     }
