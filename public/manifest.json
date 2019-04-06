@@ -1,8 +1,12 @@
 {
  "name": "Wallet",
  "short_name": "Wallet",
- "start_url": "index.html",
+ "description": "Save your passes and tickets easily and secure in a backed up wallet.",
+ "start_url": "/",
  "display": "standalone",
+ "orientation": "portrait",
+ "background_color": "#9D6447",
+ "theme_color": "#9D6447",
  "icons": [
   {
    "src": "\/android-icon-36x36.png",
