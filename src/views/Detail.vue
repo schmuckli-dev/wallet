@@ -204,8 +204,12 @@ export default {
         case "PKBarcodeFormatQR":
           type = "qrcode";
           break;
+        case "PKBarcodeFormatPDF417":
+          type = "pdf417"
+          break;
         default:
           //Detect new formats
+          //console.log(this.data.barcode.format);
           break;
       }
       bwipjs('barcode', {

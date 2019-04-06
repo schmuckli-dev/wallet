@@ -120,6 +120,8 @@ export default{
           } else { //All other transports
             return this.passData.boardingPass.primaryFields[0].value + " → " + this.passData.boardingPass.primaryFields[1].value;
           }
+        } else if(this.passData.generic) {
+          return this.passData.generic.primaryFields[0].value;
         } else {
           return "Other";
         }
@@ -146,6 +148,8 @@ export default{
           return "Event";
         } else if (this.passData.boardingPass){
           return "Boarding-Pass";
+        } else if (this.passData.generic){
+          return "General"
         } else {
           return "Other";
         }
