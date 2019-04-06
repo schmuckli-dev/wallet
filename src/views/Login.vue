@@ -104,13 +104,13 @@ export default {
       if(this.$refs.formRegister.validate()){
         if (this.Rpassword === this.RpasswordRepeat) {
           if(navigator.onLine){
-            firebase.auth().createUserWithEmailAndPassword(this.email.trim(), this.password).then(
+            firebase.auth().createUserWithEmailAndPassword(this.Remail.trim(), this.Rpassword).then(
               function(){
                 global_this.$router.replace('home');
-                StoreMod.showNotification("Registration successful. Please sign now in.");
+                StoreMod.showNotification("Registration successful. You're now logged in.");
               },
-              function(){
-                StoreMod.showNotification("The email or password is invalid.");
+              function(error){
+                StoreMod.showNotification(error);
               }
             );
           } else {
