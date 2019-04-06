@@ -33,6 +33,11 @@
 
     <v-content>
       <router-view/>
+      <footer>
+        <p>This is a project by
+          <a href="https://www.schmuckli.net/" target="_blank">Julian Schmuckli</a> |
+          <a href="https://github.com/julianschmuckli/wallet" target="_blank">View on Github</a></p>
+      </footer>
     </v-content>
 
     <!-- Notification -->
@@ -118,4 +123,13 @@ export default {
 
 <style>
 @import "./assets/css/layout.css";
+
+footer{
+  text-align:center;
+  margin-top:30px;
+  color:grey;
+}
+footer a{
+  color:grey;
+}
 </style>
