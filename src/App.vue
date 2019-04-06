@@ -15,16 +15,16 @@
             dark
             v-on="on"
           >
-            {{ userName }}
+            {{ userName }} <v-icon>keyboard_arrow_down</v-icon>
           </v-btn>
         </template>
         <v-list>
           <v-list-tile @click="openSettings">
-            <v-icon>settings</v-icon>
+            <v-icon style="margin-right:10px;">settings</v-icon>
             <v-list-tile-title>Settings</v-list-tile-title>
           </v-list-tile>
           <v-list-tile @click="logout">
-            <v-icon>power_settings_new</v-icon>
+            <v-icon style="margin-right:10px;">power_settings_new</v-icon>
             <v-list-tile-title>Logout</v-list-tile-title>
           </v-list-tile>
         </v-list>
