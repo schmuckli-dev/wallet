@@ -135,6 +135,8 @@ export default{
           return this.passData.eventTicket;
         } else if (this.passData.boardingPass){
           return this.passData.boardingPass;
+        } else if (this.passData.generic){
+          return this.passData.generic;
         } else {
           return {};
         }
