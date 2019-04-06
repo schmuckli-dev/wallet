@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <Passes />
+    <Passes :showArchived="true" />
     <div style="text-align:center;margin-top:50px;">
-      <v-btn @click="goArchive" flat>Show archived passes</v-btn>
+      <v-btn @click="goHome" flat>Show current passes</v-btn>
     </div>
   </v-container>
 </template>
@@ -16,8 +16,8 @@ export default {
     Passes
   },
   methods: {
-    goArchive(){
-      this.$router.replace("archive");
+    goHome(){
+      this.$router.replace("home")
     }
   }
 }

@@ -30,6 +30,12 @@ import firebase from "firebase";
 
 export default {
   name: "Passes",
+  props: {
+    showArchived: {
+      type: Boolean,
+      default: null
+    }
+  },
   data() {
     return {
       passes: [],
@@ -44,7 +50,7 @@ export default {
       var global_this = this;
 
       if(navigator.onLine){
-        var passesRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/passes').orderByChild("date");
+        var passesRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + '/passes').orderByChild("archive").equalTo(this.showArchived);
         passesRef.on('value', function(snapshot) {
           try {
             global_this.passes = [];
@@ -55,7 +61,9 @@ export default {
               global_this.passes.push(Object.assign(pass[1], {id: pass[0]}));
             });
             global_this.loaded = true;
-            window.localStorage.setItem("passes", JSON.stringify(global_this.passes));
+            if(global_this.showArchived !== true){ //Do not save archive for offline usage
+              window.localStorage.setItem("passes", JSON.stringify(global_this.passes));
+            }
           }catch(e){
             StoreMod.showNotification("There are no passes stored.");
           }

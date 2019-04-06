@@ -7,6 +7,7 @@ import Login from '@/views/Login';
 import Detail from '@/views/Detail';
 import New from '@/views/New';
 import Settings from '@/views/Settings';
+import Archive from '@/views/Archive';
 //import SignUp from '@/views/SignUp';
 
 Vue.use(Router);
@@ -54,6 +55,15 @@ const router = new Router({
       component: Home,
       meta: {
         requiresAuth: true
+      }
+    },
+    {
+      path: '/archive',
+      name: 'Archive',
+      component: Archive,
+      meta: {
+        requiresAuth: true,
+        requiresOnline: true
       }
     },
     {

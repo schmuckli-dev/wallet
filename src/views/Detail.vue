@@ -36,7 +36,9 @@
               </div>
             </v-card-title>
             <v-card-actions style="float:right;">
-              <v-btn v-if="isOnline" @click="deletePass" light flat><v-icon style="margin-right:10px;">delete</v-icon> delete</v-btn>
+              <v-btn v-if="!data.archive" @click="archivePass" light flat><v-icon style="margin-right:10px;">archive</v-icon> archive</v-btn>
+              <v-btn v-if="data.archive" @click="unarchivePass" light flat><v-icon style="margin-right:10px;">unarchive</v-icon> unarchive</v-btn>
+              <v-btn @click="deletePass" light flat><v-icon style="margin-right:10px;">delete</v-icon> delete</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -149,6 +151,30 @@ export default {
         }
       }
     },
+    archivePass(){
+      var global_this = this;
+      //Delete the pass
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"archive": true}, function (error) {
+        if (error) {
+          StoreMod.showNotification("There was an error while archiving the pass.");
+        } else {
+          StoreMod.showNotification("The pass has been archived.");
+          global_this.$router.replace("home");
+        }
+      });
+    },
+    unarchivePass(){
+      var global_this = this;
+      //Delete the pass
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"archive": null}, function (error) {
+        if (error) {
+          StoreMod.showNotification("There was an error while archiving the pass.");
+        } else {
+          StoreMod.showNotification("The pass has been unarchived.");
+          global_this.$router.replace("archive");
+        }
+      });
+    },
     deletePass(){
       if(navigator.onLine){
         this.dialogDelete = true;
@@ -162,9 +188,9 @@ export default {
       //Delete the pass
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).set(null, function (error) {
         if (error) {
-          StoreMod.showNotification("There was an error while deleting the app.");
+          StoreMod.showNotification("There was an error while deleting the pass.");
         } else {
-          StoreMod.showNotification("The pass has been deleted");
+          StoreMod.showNotification("The pass has been deleted.");
           global_this.$router.replace("home");
         }
       });

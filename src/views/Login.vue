@@ -44,7 +44,7 @@ export default {
       var global_this = this;
       if(this.$refs.formLogin.validate()){
         if(navigator.onLine){
-          firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+          firebase.auth().signInWithEmailAndPassword(this.email.trim(), this.password).then(
             function(){
               global_this.$router.replace('home');
               StoreMod.showNotification("Login successful.");

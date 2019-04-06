@@ -6,3 +6,12 @@ body{
   -o-user-select: none;
   -moz-user-select: none;
 }
+
+.form_card{
+  width:50%;
+}
+@media only screen and (max-width: 600px) {
+  .form_card {
+    width:100%;
+  }
+}
