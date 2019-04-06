@@ -6,33 +6,49 @@
         <v-flex xs12 sm6 md4>
           <v-card class="pass" :style="cardStyle">
             <v-card-title primary-title>
-              <div style="width:100%;">
-                <div class="headerCard">
-                  <div :style="logoSrc" style="width:100%;height:100px;
-                  -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
-                mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="data.logo !== ''"></div>
-                  <div style="float:right;width:auto;text-align:right;">
+              <slide-up-down :active="frontCardSide" style="width:100%;">
+                <div style="width:100%;" id="pass_front">
+                  <div class="headerCard">
+                    <div :style="logoSrc" style="width:100%;height:100px;
+                    -webkit-mask-image:-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+                  mask-image: linear-gradient(to bottom, rgba(0,0,0,1), rgba(0,0,0,0));" v-if="data.logo !== ''"></div>
+                    <div style="float:right;width:auto;text-align:right;">
 
-                    <br>
-                    <span v-if="data.organization !== '' && data.logo === ''">{{ data.organization }}</span>
+                      <br>
+                      <span v-if="data.organization !== '' && data.logo === ''">{{ data.organization }}</span>
+                    </div>
+                    <div class="headline" style="margin-bottom:10px;">
+                      {{ data.title }}
+                    </div>
                   </div>
-                  <div class="headline" style="margin-bottom:10px;">
-                    {{ data.title }}
+                  <v-layout style="margin-top:20px;" row>
+                    <v-flex xs6 v-if="data.date !== ''">
+                      <b>Date &amp; Time</b><br>
+                      {{ formattedDate }}
+                    </v-flex>
+                    <v-flex xs6 v-if="data.type !== ''">
+                      <b>Type</b><br>
+                      {{ data.type }}
+                    </v-flex>
+                  </v-layout>
+                  <div style="text-align:center;margin-top:40px;">
+                    <canvas id="barcode" style="width:200px;"></canvas>
                   </div>
                 </div>
-                <v-layout style="margin-top:20px;" row>
-                  <v-flex xs6 v-if="data.date !== ''">
-                    <b>Date &amp; Time</b><br>
-                    {{ formattedDate }}
-                  </v-flex>
-                  <v-flex xs6 v-if="data.type !== ''">
-                    <b>Type</b><br>
-                    {{ data.type }}
-                  </v-flex>
-                </v-layout>
-                <div style="text-align:center;margin-top:40px;">
-                  <canvas id="barcode" style="width:200px;"></canvas>
+              </slide-up-down>
+              <slide-up-down :active="!frontCardSide" style="width:100%;">
+                <div style="width:100%;" id="card_back">
+                  <v-layout row wrap>
+                    <v-flex xs6 v-for="field in backFields" :key="field.key" style="padding:2px;">
+                      <b class="field_label" :title="convertLabel(field.label)">{{ convertLabel(field.label) }}</b>
+                      {{ field.value }}
+                    </v-flex>
+                  </v-layout>
                 </div>
+              </slide-up-down>
+              <div style="width:100%;text-align:right;">
+                <v-icon style="font-size:20px;color:white;" v-if="!isBackgroundLight" @click="frontCardSide = !frontCardSide" >loop</v-icon>
+                <v-icon style="font-size:20px;color:black" v-if="isBackgroundLight" @click="frontCardSide = !frontCardSide">loop</v-icon>
               </div>
             </v-card-title>
             <v-card-actions style="float:right;">
@@ -85,10 +101,15 @@
 </template>
 
 <script>
+import Vue from "vue";
 import { Store, StoreMod } from "./../store.js";
 import { lightOrDark } from "../assets/js/color";
+import { convertLabel } from "../assets/js/label";
 import bwipjs from 'bwip-js';
 import firebase from "firebase";
+
+import SlideUpDown from 'vue-slide-up-down'
+Vue.component('slide-up-down', SlideUpDown)
 
 import { getFormattedDate } from "../assets/js/date";
 
@@ -99,6 +120,7 @@ export default {
       id: "",
       data: {},
       show: false,
+      frontCardSide: true,
       dialogDelete: false
     }
   },
@@ -122,6 +144,13 @@ export default {
     },
     formattedDate(){
       return getFormattedDate(this.data.date);
+    },
+    backFields(){
+      if(this.data.fields){
+        return this.data.fields.backFields;
+      } else {
+        return [];
+      }
     }
   },
   mounted(){
@@ -225,13 +254,25 @@ export default {
             }
         });
     },
-    isOnline(){
-      return navigator.onLine;
+    convertLabel(label){
+      return convertLabel(label);
     },
     back(){
       StoreMod.setCurrentPass("");
-      this.$router.replace("home");
+      if(this.data.archive){
+        this.$router.replace("archive");
+      } else {
+        this.$router.replace("home");
+      }
     }
   }
 }
 </script>
+<style scoped>
+.field_label{
+  display: block;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+</style>
