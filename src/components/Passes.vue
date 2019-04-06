@@ -6,6 +6,12 @@
       color="#9D6447" style="margin-top:30px;"
       indeterminate v-if="!loaded"
     ></v-progress-circular>
+    <v-flex xs12 style="text-align:center;" v-if="passes.length === 0 && loaded">
+      <v-icon style="display:block;font-size:100px;color:black;">inbox</v-icon>
+    </v-flex>
+    <v-flex xs12 style="text-align:center;" v-if="passes.length === 0 && loaded">
+      <p style="display:block;">No passes stored yet.<br>Add one with the button at the bottom right.</p>
+    </v-flex>
     <v-flex xs12 sm4 md3 v-for="(pass, index) in passes" :key="pass.id">
       <Pass
       :index="index"
@@ -65,7 +71,7 @@ export default {
               window.localStorage.setItem("passes", JSON.stringify(global_this.passes));
             }
           }catch(e){
-            StoreMod.showNotification("There are no passes stored.");
+            global_this.loaded = true;
           }
         });
       } else {

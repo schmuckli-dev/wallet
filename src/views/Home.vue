@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { StoreMod } from "./../store";
 import Passes from "../components/Passes";
 
 export default {
@@ -17,7 +18,11 @@ export default {
   },
   methods: {
     goArchive(){
-      this.$router.replace("archive");
+      if (navigator.onLine) {
+        this.$router.replace("archive");
+      } else {
+        StoreMod.showNotification("You can't visit the archive while you are offline.");
+      }
     }
   }
 }
