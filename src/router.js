@@ -4,11 +4,11 @@ import Router from 'vue-router';
 
 import Home from '@/views/Home';
 import Login from '@/views/Login';
+import Register from '@/views/Register';
 import Detail from '@/views/Detail';
 import New from '@/views/New';
 import Settings from '@/views/Settings';
 import Archive from '@/views/Archive';
-//import SignUp from '@/views/SignUp';
 
 Vue.use(Router);
 
@@ -28,6 +28,11 @@ const router = new Router({
       component: Login
     },
     {
+      path: '/register',
+      name: 'Register',
+      component: Register
+    },
+    {
       path: '/pass',
       name: 'Pass',
       component: Detail,
@@ -43,12 +48,7 @@ const router = new Router({
         requiresAuth: true,
         requiresOnline: true
       }
-    },/*
-    {
-      path: '/sign-up',
-      name: 'SignUp',
-      component: SignUp
-    },*/
+    },
     {
       path: '/home',
       name: 'Home',

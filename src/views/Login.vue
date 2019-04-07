@@ -21,35 +21,7 @@
             </v-card-title>
             <v-card-actions right>
               <v-btn type="submit" flat>Login</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-flex>
-      <v-flex xs12 sm6>
-        <v-form @submit="register($event)" ref="formRegister" style="margin-left:auto;margin-right:auto;">
-          <v-card class="form_card">
-            <v-card-title primary-title>
-              <div style="width:100%;">
-                <h3 class="headline mb-0">Register</h3>
-                <br>
-                <v-text-field outline
-                  v-model="Remail"
-                  label="E-Mail" required
-                ></v-text-field>
-                <v-text-field outline
-                  v-model="Rpassword"
-                  type="password"
-                  label="Password" required
-                ></v-text-field>
-                <v-text-field outline
-                  v-model="RpasswordRepeat"
-                  type="password"
-                  label="Repeat password" required
-                ></v-text-field>
-              </div>
-            </v-card-title>
-            <v-card-actions right>
-              <v-btn type="submit" flat>Register</v-btn>
+              <v-btn type="button" @click="goToRegister" flat>Don't have an account?</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -69,10 +41,6 @@ export default {
       //Login
       email: "",
       password: "",
-      //Register
-      Remail: "",
-      Rpassword: "",
-      RpasswordRepeat: ""
     }
   },
   methods: {
@@ -97,27 +65,8 @@ export default {
       }
       return false;
     },
-    register(event){
-      event.preventDefault();
-
-      var global_this = this;
-      if(this.$refs.formRegister.validate()){
-        if (this.Rpassword === this.RpasswordRepeat) {
-          if(navigator.onLine){
-            firebase.auth().createUserWithEmailAndPassword(this.Remail.trim(), this.Rpassword).then(
-              function(){
-                global_this.$router.replace('home');
-                StoreMod.showNotification("Registration successful. You're now logged in.");
-              },
-              function(error){
-                StoreMod.showNotification(error);
-              }
-            );
-          } else {
-            StoreMod.showNotification("You can't register while you're offline.");
-          }
-        }
-      }
+    goToRegister(){
+      this.$router.replace("register");
     }
   }
 }
