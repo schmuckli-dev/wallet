@@ -31,6 +31,12 @@
                       {{ data.type }}
                     </v-flex>
                   </v-layout>
+                  <v-layout style="margin-top:20px;" row wrap>
+                    <v-flex xs6 v-for="field in frontFields" :key="field.key">
+                      <b>{{ convertLabel(field.label) }}</b><br>
+                      {{ field.value }}
+                    </v-flex>
+                  </v-layout>
                   <div style="text-align:center;margin-top:40px;">
                     <canvas id="barcode" style="width:200px;"></canvas>
                   </div>
@@ -41,7 +47,7 @@
                   <v-layout row wrap>
                     <v-flex xs6 v-for="field in backFields" :key="field.key" style="padding:2px;">
                       <b class="field_label" :title="convertLabel(field.label)">{{ convertLabel(field.label) }}</b>
-                      {{ field.value }}
+                      <span class="field_value">{{ field.value }}</span>
                     </v-flex>
                   </v-layout>
                 </div>
@@ -144,6 +150,13 @@ export default {
     },
     formattedDate(){
       return getFormattedDate(this.data.date);
+    },
+    frontFields(){
+      if(this.data.fields){
+        return this.data.fields.primaryFields.concat(this.data.fields.secondaryFields);
+      } else {
+        return [];
+      }
     },
     backFields(){
       if(this.data.fields){
@@ -272,6 +285,12 @@ export default {
 .field_label{
   display: block;
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.field_value{
+  display: block;
+  white-space: normal;
   text-overflow: ellipsis;
   overflow: hidden;
 }
