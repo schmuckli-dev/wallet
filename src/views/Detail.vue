@@ -31,15 +31,15 @@
                       {{ data.type }}
                     </v-flex>
                   </v-layout>
-                  <v-layout style="margin-top:20px;" row wrap>
-                    <v-flex xs6 v-for="field in frontFields" :key="field.key">
-                      <b>{{ convertLabel(field.label) }}</b><br>
-                      {{ field.value }}
-                    </v-flex>
-                  </v-layout>
                   <div style="text-align:center;margin-top:40px;">
                     <canvas id="barcode" style="width:200px;"></canvas>
                   </div>
+                  <v-layout style="margin-top:20px;" row wrap>
+                    <v-flex xs6 v-for="field in frontFields" :key="field.key">
+                      <b>{{ convertLabel(getKeyOrLabel(field)) }}</b><br>
+                      {{ field.value }}
+                    </v-flex>
+                  </v-layout>
                 </div>
               </slide-up-down>
               <slide-up-down :active="!frontCardSide" style="width:100%;">
@@ -153,7 +153,7 @@ export default {
     },
     frontFields(){
       if(this.data.fields){
-        return this.data.fields.primaryFields.concat(this.data.fields.secondaryFields);
+        return (this.data.fields.primaryFields.concat(this.data.fields.secondaryFields)).concat(this.data.fields.auxiliaryFields);
       } else {
         return [];
       }
@@ -266,6 +266,13 @@ export default {
               StoreMod.showNotification("There was an error while creating the barcode");
             }
         });
+    },
+    getKeyOrLabel(field){
+      if(field.label){
+        return field.label;
+      } else {
+        return field.key;
+      }
     },
     convertLabel(label){
       return convertLabel(label);

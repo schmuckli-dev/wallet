@@ -7,7 +7,18 @@ const labels = {
   departsHeading: "Departing",
   destinationHeading: "Destination",
   passengerHeading: "Passenger",
-  stateHeading: "-"
+  stateHeading: "State",
+  flightHeading: "Flight",
+  dateHeading: "Date",
+  boardingHeading: "Boarding",
+  classHeading: "Class",
+  eTicketHeading: "e-Ticket",
+  pricePlan: "Price plan",
+  seatCategory: "Seat",
+  passengerCategory: "Passenger Category",
+  routeOrProduct: "Route or product",
+  KEY_PRIMERY: "Name",
+  KEY_SECONDARY_TICKETTYPENAME: "Tickettype",
 }
 
 export function convertLabel(label){
