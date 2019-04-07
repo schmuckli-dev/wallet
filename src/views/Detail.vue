@@ -25,6 +25,8 @@
                     <v-flex xs6 v-if="data.date !== ''">
                       <b>Date &amp; Time</b><br>
                       {{ formattedDate }}
+                      <a @click="dialogEdit = true" class="link" style="color:black;" v-if="isBackgroundLight">Edit</a>
+                      <a @click="dialogEdit = true" class="link" style="color:white;" v-if="!isBackgroundLight">Edit</a>
                     </v-flex>
                     <v-flex xs6 v-if="data.type !== ''">
                       <b>Type</b><br>
@@ -66,40 +68,93 @@
         </v-flex>
       </v-layout>
     </v-slide-y-transition>
-    <!-- Delete dialog -->
-    <v-dialog
-      v-model="dialogDelete"
-      width="500"
-    >
+    <!-- Edit dialog -->
+    <v-dialog v-model="dialogEdit" width="500">
       <v-card>
-        <v-card-title
-          class="headline lighten-2"
-          primary-title
-        >
+        <v-card-title class="headline lighten-2" primary-title>
+          Edit pass
+        </v-card-title>
+        <v-card-text>
+          <p>You can change here the date and time of the passport, if it has not proposed correctly.</p>
+          <b>Relevant date</b>
+          <v-menu
+            ref="date"
+            v-model="dialogEditDateModal"
+            :close-on-content-click="false"
+            :nudge-right="40"
+            lazy
+            transition="fade-transition"
+            offset-y
+            full-width
+            max-width="290px"
+            min-width="290px"
+          >
+            <template v-slot:activator="{ on }">
+              <v-text-field
+                  v-model="dialogEditDateFormatted"
+                  label="Date"
+                  hint="DD.MM.YYYY format"
+                  persistent-hint
+                  prepend-icon="event"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="dialogEditDate" @input="dialogEditDateModal = false"></v-date-picker>
+            </v-menu>
+            <b>Relevant time</b>
+            <v-menu
+              ref="time"
+              v-model="dialogEditTimeModal"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="dialogEditTime"
+              lazy
+              transition="fade-transition"
+              offset-y
+              full-width
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                    v-model="dialogEditTime"
+                    label="Time"
+                    hint="HH:MM format"
+                    persistent-hint
+                    prepend-icon="event"
+                    v-on="on"
+                  ></v-text-field>
+                </template>
+                <v-time-picker format="24hr"
+                  v-if="dialogEditTimeModal"
+                  v-model="dialogEditTime"
+                  full-width
+                  @click:minute="$refs.time.save(dialogEditTime)"
+                ></v-time-picker>
+              </v-menu>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn flat @click="dialogEdit = false">Cancel</v-btn>
+          <v-btn flat @click="save">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <!-- Delete dialog -->
+    <v-dialog v-model="dialogDelete" width="500">
+      <v-card>
+        <v-card-title class="headline lighten-2" primary-title>
           Delete this pass?
         </v-card-title>
-
         <v-card-text>
           Do you really want to delete this pass?
         </v-card-text>
-
         <v-divider></v-divider>
-
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            flat
-            @click="dialogDelete = false"
-          >
-            Cancel
-          </v-btn>
-          <v-btn
-            flat
-            color="red"
-            @click="deleteConfirm"
-          >
-            Delete
-          </v-btn>
+          <v-btn flat @click="dialogDelete = false">Cancel</v-btn>
+          <v-btn flat color="red" @click="deleteConfirm">Delete</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -111,13 +166,12 @@ import Vue from "vue";
 import { Store, StoreMod } from "./../store.js";
 import { lightOrDark } from "../assets/js/color";
 import { convertLabel } from "../assets/js/label";
+import { getFormattedDate, getFormattedJustDate, getFormattedJustTime } from "../assets/js/date";
 import bwipjs from 'bwip-js';
 import firebase from "firebase";
 
 import SlideUpDown from 'vue-slide-up-down'
 Vue.component('slide-up-down', SlideUpDown)
-
-import { getFormattedDate } from "../assets/js/date";
 
 export default {
   name: "Detail",
@@ -127,7 +181,15 @@ export default {
       data: {},
       show: false,
       frontCardSide: true,
-      dialogDelete: false
+      dialogDelete: false,
+      //Edit dialog
+      dialogEdit: false,
+      dialogEditDateModal: "",
+      dialogEditDate: this.formattedJustDate,
+      dialogEditDateFormatted: this.formattedJustDate,
+      dialogEditTimeModal: "",
+      dialogEditTime: this.formattedJustTime,
+      dialogEditTimeFormatted: this.formattedJustTime
     }
   },
   computed: {
@@ -150,6 +212,12 @@ export default {
     },
     formattedDate(){
       return getFormattedDate(this.data.date);
+    },
+    formattedJustDate(){
+      return getFormattedJustDate(this.data.date);
+    },
+    formattedJustTime(){
+      return getFormattedJustTime(this.data.date);
     },
     frontFields(){
       if(this.data.fields){
@@ -192,6 +260,17 @@ export default {
           global_this.$router.replace("home");
         }
       }
+    },
+    save(){
+      var datetime = (this.dialogEditDate + " " + this.dialogEditTime);
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"relevantDate": datetime}, function (error) {
+        if (error) {
+          StoreMod.showNotification("There was an error while updating the pass.");
+        } else {
+          StoreMod.showNotification("The pass has been updated");
+          this.dialogEdit = false;
+        }
+      });
     },
     archivePass(){
       var global_this = this;
@@ -274,6 +353,9 @@ export default {
         return field.key;
       }
     },
+    parseDate(date){
+      return getFormattedJustDate(date);
+    },
     convertLabel(label){
       return convertLabel(label);
     },
@@ -284,6 +366,11 @@ export default {
       } else {
         this.$router.replace("home");
       }
+    }
+  },
+  watch: {
+    dialogEditDate (val) {
+      this.dialogEditDateFormatted = this.parseDate(val)
     }
   }
 }
@@ -300,5 +387,8 @@ export default {
   white-space: normal;
   text-overflow: ellipsis;
   overflow: hidden;
+}
+.link{
+  text-decoration: underline;
 }
 </style>
