@@ -1,30 +1,31 @@
 <template>
   <v-container>
     <v-layout row wrap>
-      <v-flex xs12 sm6>
+      <v-flex order-xs2 order-sm1 xs12 sm6>
         <v-form @submit="login($event)" ref="formLogin" style="margin-left:auto;margin-right:auto;">
           <v-card class="form_card">
-            <v-card-title primary-title>
-              <div style="width:100%;">
-                <h3 class="headline mb-0">Login</h3>
-                <br>
-                <v-text-field outline
-                  v-model="email"
-                  label="E-Mail" required
-                ></v-text-field>
-                <v-text-field outline
-                  v-model="password"
-                  type="password"
-                  label="Password" required
-                ></v-text-field>
-              </div>
-            </v-card-title>
+            <div style="width:100%;">
+              <h2>Login</h2>
+              <br>
+              <v-text-field outline
+                v-model="email"
+                label="E-Mail" required
+              ></v-text-field>
+              <v-text-field outline
+                v-model="password"
+                type="password"
+                label="Password" required
+              ></v-text-field>
+            </div>
             <v-card-actions right>
               <v-btn type="submit" flat>Login</v-btn>
               <v-btn type="button" @click="goToRegister" flat>Don't have an account?</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
+      </v-flex>
+      <v-flex order-xs1 order-sm2 xs12 sm6>
+        <FeatureCard />
       </v-flex>
     </v-layout>
   </v-container>
@@ -33,6 +34,7 @@
 <script>
 import { StoreMod } from "../store.js";
 import firebase from "firebase";
+import FeatureCard from "../components/FeatureCard";
 
 export default {
   name: "Login",
@@ -42,6 +44,9 @@ export default {
       email: "",
       password: "",
     }
+  },
+  components: {
+    FeatureCard
   },
   methods: {
     login(event){
@@ -71,3 +76,8 @@ export default {
   }
 }
 </script>
+<style>
+h2 {
+  margin: 10px 10px 0 10px;
+}
+</style>
