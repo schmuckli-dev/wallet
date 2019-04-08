@@ -54,7 +54,7 @@
                   </v-layout>
                 </div>
               </slide-up-down>
-              <div style="width:100%;text-align:right;">
+              <div style="width:100%;text-align:right;" v-if="data.fields !== undefined && data.fields.backFields !== undefined">
                 <v-icon style="font-size:20px;color:white;" v-if="!isBackgroundLight" @click="frontCardSide = !frontCardSide" >loop</v-icon>
                 <v-icon style="font-size:20px;color:black" v-if="isBackgroundLight" @click="frontCardSide = !frontCardSide">loop</v-icon>
               </div>
