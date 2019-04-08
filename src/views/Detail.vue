@@ -2,10 +2,10 @@
   <v-container>
     <v-layout row>
       <v-flex xs6>
-        <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
+        <v-btn @click="back" flat><v-icon style="margin-right:10px;">keyboard_arrow_left</v-icon> back</v-btn>
       </v-flex>
       <v-flex xs6 style="text-align:right;">
-        <v-btn @click="openEditDialog" flat><v-icon>edit</v-icon> edit</v-btn>
+        <v-btn @click="openEditDialog" flat><v-icon style="margin-right:10px;">edit</v-icon> edit</v-btn>
       </v-flex>
     </v-layout>
     <v-slide-y-transition>

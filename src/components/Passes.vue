@@ -13,6 +13,9 @@
       <p style="display:block;">No passes stored yet.<br>Add one with the button at the bottom right.</p>
     </v-flex>
     <v-flex xs12 sm4 md3 v-for="(pass, index) in passes" :key="pass.id">
+      <h3 v-if="index == 0">{{ getMonthYear(pass.date) }}</h3>
+      <h3 v-if="passes[index-1] && getMonthYear(pass.date) !== getMonthYear(passes[index-1].date)">{{ getMonthYear(pass.date) }}</h3>
+      <h3 v-if="passes[index-1] && getMonthYear(pass.date) === getMonthYear(passes[index-1].date)" class="hidden-xs-only">&nbsp;</h3>
       <Pass
       :index="index"
       :id="pass.id"
@@ -31,6 +34,7 @@
 
 <script>
 import { StoreMod } from "../store.js";
+import { getMonthYear } from "../assets/js/date.js";
 import Pass from "../components/Pass";
 import firebase from "firebase";
 
@@ -79,6 +83,9 @@ export default {
         global_this.loaded = true;
         StoreMod.showNotification("Loading offline passes.");
       }
+    },
+    getMonthYear(timestamp){
+      return getMonthYear(timestamp);
     }
   },
   components: {
@@ -86,3 +93,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+h3{
+  margin:10px;
+  margin-top: 30px;
+  color:grey;
+}
+</style>
