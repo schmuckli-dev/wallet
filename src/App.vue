@@ -15,10 +15,10 @@
             dark
             v-on="on"
           >
-            {{ userName }} <v-icon>keyboard_arrow_down</v-icon>
+            {{ userName }} <v-icon v-if="isLoggedIn">keyboard_arrow_down</v-icon>
           </v-btn>
         </template>
-        <v-list>
+        <v-list v-if="isLoggedIn">
           <v-list-tile @click="openSettings">
             <v-icon style="margin-right:10px;">settings</v-icon>
             <v-list-tile-title>Settings</v-list-tile-title>
@@ -53,7 +53,7 @@
         Close
       </v-btn>
     </v-snackbar>
-    <v-btn fab dark color="#9D6447" fixed right bottom>
+    <v-btn fab dark color="#9D6447" v-if="isLoggedIn" fixed right bottom>
         <v-icon @click="openNew" dark>add</v-icon>
     </v-btn>
   </v-app>
@@ -81,7 +81,7 @@ export default {
     },
     /* Notificatio End */
     userName(){
-      if(this.currentUser == undefined){
+      if(!this.isLoggedIn){
         return "Not logged in";
       }
       if(this.currentUser.displayName == undefined){
@@ -90,6 +90,9 @@ export default {
         return this.currentUser.displayName;
       }
     },
+    isLoggedIn(){
+      return this.currentUser != undefined;
+    }
   },
   methods: {
     openSettings(){
