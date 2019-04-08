@@ -1,9 +1,16 @@
 <template>
   <v-container>
-    <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
+    <v-layout row>
+      <v-flex xs6>
+        <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
+      </v-flex>
+      <v-flex xs6 style="text-align:right;">
+        <v-btn @click="openEditDialog" flat><v-icon>edit</v-icon> edit</v-btn>
+      </v-flex>
+    </v-layout>
     <v-slide-y-transition>
       <v-layout justify-space-around row wrap v-show="show">
-        <v-flex xs12 sm6 md4>
+        <v-flex xs12 sm9 md6 lg4 >
           <v-card class="pass" :style="cardStyle">
             <v-card-title primary-title>
               <slide-up-down :active="frontCardSide" style="width:100%;">
@@ -25,8 +32,6 @@
                     <v-flex xs6 v-if="data.date !== ''">
                       <b>Date &amp; Time</b><br>
                       {{ formattedDate }}
-                      <a @click="openEditDialog" class="link" style="color:black;" v-if="isBackgroundLight">Edit</a>
-                      <a @click="openEditDialog" class="link" style="color:white;" v-if="!isBackgroundLight">Edit</a>
                     </v-flex>
                     <v-flex xs6 v-if="data.type !== ''">
                       <b>Type</b><br>
@@ -75,8 +80,12 @@
           Edit pass
         </v-card-title>
         <v-card-text>
+          <v-text-field
+              v-model="dialogEditTitle"
+              label="Title"
+              persistent-hint
+            ></v-text-field>
           <p>You can change here the date and time of the passport, if it has not proposed correctly.</p>
-          <b>Relevant date</b>
           <v-menu
             ref="date"
             v-model="dialogEditDateModal"
@@ -101,7 +110,6 @@
               </template>
               <v-date-picker v-model="dialogEditDate" @input="dialogEditDateModal = false"></v-date-picker>
             </v-menu>
-            <b>Relevant time</b>
             <v-menu
               ref="time"
               v-model="dialogEditTimeModal"
@@ -184,6 +192,7 @@ export default {
       dialogDelete: false,
       //Edit dialog
       dialogEdit: false,
+      dialogEditTitle: "",
       dialogEditDateModal: "",
       dialogEditDate: this.formattedJustDate,
       dialogEditDateFormatted: this.formattedJustDate,
@@ -256,6 +265,7 @@ export default {
           global_this.data = Store.currentPass;
 
           //Set active pass settings
+          global_this.dialogEditTitle = global_this.data.title;
           global_this.dialogEditDate = getFormattedJustDateUS(global_this.data.date);
           global_this.dialogEditTime = getFormattedJustTime(global_this.data.date);
 
@@ -278,11 +288,16 @@ export default {
       var global_this = this;
       var datetime = new Date(this.dialogEditDate + " " + this.dialogEditTime);
       var time = datetime.getTime();
-      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"date": time}, function (error) {
+
+      var title = this.dialogEditTitle;
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"date": time, "title": title}, function (error) {
         if (error) {
           StoreMod.showNotification("There was an error while updating the pass.");
         } else {
+          //Update fields directly for card
           global_this.data.date = time;
+          global_this.data.title = title;
+
           StoreMod.showNotification("The pass has been updated.");
           global_this.dialogEdit = false;
         }
