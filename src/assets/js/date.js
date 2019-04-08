@@ -17,6 +17,15 @@ export function getFormattedJustDate(date_string){
   }
 }
 
+export function getFormattedJustDateUS(date_string){
+  var date = new Date(date_string);
+  if(date instanceof Date && !isNaN(date)){
+    return date.getFullYear() + "-" + ((date.getMonth() + 1)+"").padStart(2, '0') + "-" + (date.getDate()+"").padStart(2, '0');
+  } else {
+    return "";
+  }
+}
+
 export function getFormattedJustTime(date_string){
   var date = new Date(date_string);
   if(date instanceof Date && !isNaN(date)){

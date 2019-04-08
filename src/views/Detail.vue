@@ -25,8 +25,8 @@
                     <v-flex xs6 v-if="data.date !== ''">
                       <b>Date &amp; Time</b><br>
                       {{ formattedDate }}
-                      <a @click="dialogEdit = true" class="link" style="color:black;" v-if="isBackgroundLight">Edit</a>
-                      <a @click="dialogEdit = true" class="link" style="color:white;" v-if="!isBackgroundLight">Edit</a>
+                      <a @click="openEditDialog" class="link" style="color:black;" v-if="isBackgroundLight">Edit</a>
+                      <a @click="openEditDialog" class="link" style="color:white;" v-if="!isBackgroundLight">Edit</a>
                     </v-flex>
                     <v-flex xs6 v-if="data.type !== ''">
                       <b>Type</b><br>
@@ -166,7 +166,7 @@ import Vue from "vue";
 import { Store, StoreMod } from "./../store.js";
 import { lightOrDark } from "../assets/js/color";
 import { convertLabel } from "../assets/js/label";
-import { getFormattedDate, getFormattedJustDate, getFormattedJustTime } from "../assets/js/date";
+import { getFormattedDate, getFormattedJustDate, getFormattedJustTime, getFormattedJustDateUS } from "../assets/js/date";
 import bwipjs from 'bwip-js';
 import firebase from "firebase";
 
@@ -254,6 +254,12 @@ export default {
       } else {
         try{
           global_this.data = Store.currentPass;
+
+          //Set active pass settings
+          global_this.dialogEditDate = getFormattedJustDateUS(global_this.data.date);
+          global_this.dialogEditTime = getFormattedJustTime(global_this.data.date);
+
+
           global_this.renderQrCode();
         }catch(e){
           StoreMod.showNotification("This pass is not available.");
@@ -261,14 +267,24 @@ export default {
         }
       }
     },
+    openEditDialog(){
+      if (navigator.onLine) {
+        this.dialogEdit = true;
+      } else {
+        StoreMod.showNotification("You can't edit a pass while you are offline.");
+      }
+    },
     save(){
-      var datetime = (this.dialogEditDate + " " + this.dialogEditTime);
-      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"relevantDate": datetime}, function (error) {
+      var global_this = this;
+      var datetime = new Date(this.dialogEditDate + " " + this.dialogEditTime);
+      var time = datetime.getTime();
+      firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"date": time}, function (error) {
         if (error) {
           StoreMod.showNotification("There was an error while updating the pass.");
         } else {
-          StoreMod.showNotification("The pass has been updated");
-          this.dialogEdit = false;
+          global_this.data.date = time;
+          StoreMod.showNotification("The pass has been updated.");
+          global_this.dialogEdit = false;
         }
       });
     },
