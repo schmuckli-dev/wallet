@@ -10,7 +10,7 @@
             <v-icon style="margin-right:10px;">cloud_upload</v-icon> Upload
           </v-btn>
           <input id="upload_file" style="display:none;"
-            v-on:input="upload($event)"
+            @change="upload($event)"
             type="file">
           <p>Please upload a .pkpass file here.</p>
         </div>
