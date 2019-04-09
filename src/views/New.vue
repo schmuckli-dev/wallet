@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
+    <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> {{ $t("general.back") }}</v-btn>
     <v-slide-y-transition>
       <v-layout justify-space-around row wrap v-show="show">
         <Upload />

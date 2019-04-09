@@ -4,15 +4,15 @@
       <v-card-title primary-title>
         <div v-if="passData === undefined" style="text-align:center;">
           <div class="headline" style="margin-bottom:10px;">
-            Upload a new pass
+            {{ $t("upload.uploadNewPass") }}
           </div>
           <v-btn @click='openFileDialog'>
-            <v-icon style="margin-right:10px;">cloud_upload</v-icon> Upload
+            <v-icon style="margin-right:10px;">cloud_upload</v-icon> {{ $t("upload.upload") }}
           </v-btn>
           <input id="upload_file" style="display:none;"
             @change="upload($event)"
             type="file">
-          <p>Please upload a .pkpass file here.</p>
+          <p>{{ $t("upload.uploadDescription") }}</p>
         </div>
         <div v-if="passData !== undefined" style="width:100%;">
           <div v-if="passData !== undefined && title !== ''">
@@ -24,21 +24,21 @@
             <span v-if="passData.organizationName !== '' && current_logo === ''">{{ passData.organizationName }}</span>
           </div>
           <div v-if="passData !== undefined && relevantDate !== ''">
-            <b>Date &amp; Time</b><br>
+            <b>{{ $t("detail.dateTime") }}</b><br>
             {{ relevantDateFormatted }}
           </div>
           <div style="margin-top:10px;" v-if="passData !== undefined && ticketType !== ''">
-            <b>Type</b><br>
+            <b>{{ $t("detail.type") }}</b><br>
             {{ ticketType }}
           </div>
         </div>
       </v-card-title>
       <v-card-actions v-if="passData !== undefined && !isSavingPass">
-        <v-btn v-if="!isBackgroundLight" @click="addToWallet" dark flat>Add to wallet</v-btn>
-        <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>Add to wallet</v-btn>
+        <v-btn v-if="!isBackgroundLight" @click="addToWallet" dark flat>{{ $t("upload.addToWallet") }}</v-btn>
+        <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>{{ $t("detail.addToWallet") }}</v-btn>
 
-        <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>Cancel</v-btn>
-        <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>Cancel</v-btn>
+        <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>{{ $t("general.cancel") }}</v-btn>
+        <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>{{ $t("general.cancel") }}</v-btn>
       </v-card-actions>
       <v-card-actions v-if="passData !== undefined && isSavingPass">
         <v-progress-linear :indeterminate="true" v-if="!isBackgroundLight" color="white"></v-progress-linear>

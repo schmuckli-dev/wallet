@@ -2,10 +2,10 @@
   <v-container>
     <v-layout row>
       <v-flex xs6>
-        <v-btn @click="back" flat><v-icon style="margin-right:10px;">keyboard_arrow_left</v-icon> back</v-btn>
+        <v-btn @click="back" flat><v-icon style="margin-right:10px;">keyboard_arrow_left</v-icon> {{ $t("general.back") }}</v-btn>
       </v-flex>
       <v-flex xs6 style="text-align:right;">
-        <v-btn @click="openEditDialog" flat><v-icon style="margin-right:10px;">edit</v-icon> edit</v-btn>
+        <v-btn @click="openEditDialog" flat><v-icon style="margin-right:10px;">edit</v-icon> {{ $t("detail.edit") }}</v-btn>
       </v-flex>
     </v-layout>
     <v-slide-y-transition>
@@ -30,11 +30,11 @@
                   </div>
                   <v-layout style="margin-top:20px;" row>
                     <v-flex xs6 v-if="data.date !== ''">
-                      <b>Date &amp; Time</b><br>
+                      <b>{{ $t("detail.dateTime") }}</b><br>
                       {{ formattedDate }}
                     </v-flex>
                     <v-flex xs6 v-if="data.type !== ''">
-                      <b>Type</b><br>
+                      <b>{{ $t("detail.type") }}</b><br>
                       {{ data.type }}
                     </v-flex>
                   </v-layout>
@@ -65,9 +65,9 @@
               </div>
             </v-card-title>
             <v-card-actions style="float:right;">
-              <v-btn v-if="!data.archive" @click="archivePass" light flat><v-icon style="margin-right:10px;">archive</v-icon> archive</v-btn>
-              <v-btn v-if="data.archive" @click="unarchivePass" light flat><v-icon style="margin-right:10px;">unarchive</v-icon> unarchive</v-btn>
-              <v-btn @click="deletePass" light flat><v-icon style="margin-right:10px;">delete</v-icon> delete</v-btn>
+              <v-btn v-if="!data.archive" @click="archivePass" light flat><v-icon style="margin-right:10px;">archive</v-icon> {{ $t("detail.archive") }}</v-btn>
+              <v-btn v-if="data.archive" @click="unarchivePass" light flat><v-icon style="margin-right:10px;">unarchive</v-icon> {{ $t("detail.unarchive") }}</v-btn>
+              <v-btn @click="deletePass" light flat><v-icon style="margin-right:10px;">delete</v-icon> {{ $t("detail.delete") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -77,15 +77,15 @@
     <v-dialog v-model="dialogEdit" width="500">
       <v-card>
         <v-card-title class="headline lighten-2" primary-title>
-          Edit pass
+          {{ $t("detail.edit") }}
         </v-card-title>
         <v-card-text>
           <v-text-field
               v-model="dialogEditTitle"
-              label="Title"
+              :label="$t('general.title')"
               persistent-hint
             ></v-text-field>
-          <p>You can change here the date and time of the passport, if it has not proposed correctly.</p>
+          <p>{{ $t("detail.editDescriptionDateTime") }}</p>
           <v-menu
             ref="date"
             v-model="dialogEditDateModal"
@@ -101,7 +101,7 @@
             <template v-slot:activator="{ on }">
               <v-text-field
                   v-model="dialogEditDateFormatted"
-                  label="Date"
+                  :label="$t('general.date')"
                   hint="DD.MM.YYYY format"
                   persistent-hint
                   prepend-icon="event"
@@ -126,7 +126,7 @@
               <template v-slot:activator="{ on }">
                 <v-text-field
                     v-model="dialogEditTime"
-                    label="Time"
+                    :label="$t('general.time')"
                     hint="HH:MM format"
                     persistent-hint
                     prepend-icon="event"
@@ -144,8 +144,8 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn flat @click="dialogEdit = false">Cancel</v-btn>
-          <v-btn flat @click="save">Save</v-btn>
+          <v-btn flat @click="dialogEdit = false">{{ $t("general.cancel") }}</v-btn>
+          <v-btn flat @click="save">{{ $t("general.save") }}</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <Passes :showArchived="true" />
     <div style="text-align:center;margin-top:50px;">
-      <v-btn @click="goHome" flat><v-icon style="margin-right:10px;">unarchive</v-icon> Show current passes</v-btn>
+      <v-btn @click="goHome" flat><v-icon style="margin-right:10px;">unarchive</v-icon>  {{ $t("app.showCurrentPasses") }}</v-btn>
     </div>
+    <Passes :showArchived="true" />
   </v-container>
 </template>
 
