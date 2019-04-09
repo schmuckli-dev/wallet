@@ -2,12 +2,12 @@
   <v-container>
     <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
     <h1>Settings</h1>
-    <h3>Profile</h3>
+    <h3>{{ $t("settings.profile") }}</h3>
     <v-form ref="settings" @submit="save($event)">
       <v-layout row wrap>
         <v-flex xs12 sm6 md3>
           <v-text-field outline
-            label="Display name"
+            :label='$t("settings.displayName")'
             v-model="displayName"
           ></v-text-field>
         </v-flex>

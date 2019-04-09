@@ -1,10 +1,14 @@
 import Vue from 'vue'
+import VueI18n from 'vue-i18n'
 import './plugins/vuetify'
+import { translations } from './translation.js';
 import App from './App.vue'
 import router from './router';
 import firebase from "firebase";
 
 Vue.config.productionTip = false
+
+Vue.use(VueI18n);
 
 let app = '';
 
@@ -16,11 +20,17 @@ firebase.initializeApp({
   projectId: "wallet-schmuckli"
 });
 
+const i18n = new VueI18n({
+  locale: 'en', // set locale
+  messages: translations // set locale messages
+});
+
 firebase.auth().onAuthStateChanged(() => {
   if (!app) {
     /* eslint-disable no-new */
     app = new Vue({
       router,
+      i18n,
       render: h => h(App)
     }).$mount('#app');
   }
