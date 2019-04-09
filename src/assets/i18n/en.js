@@ -50,5 +50,24 @@ export default {
     upload: "Upload",
     uploadDescription: "Please upload a .pkpass file here.",
     addToWallet: "Add to wallet"
+  },
+  login: {
+    login: "Login",
+    register: "Register",
+    passwordRepeat: "Repeat password",
+    dontHaveAnAccount: "Don't have an account?",
+    alreadyHaveAnAccount: "Already have an account?"
+  },
+  notification: {
+    loginSuccessful: "Login successful.",
+    emailOrPasswordIsWrong: "The email or password is wrong.",
+    youCantLoginWhileOffline: "You can't login while you're offline.",
+    registrationSuccessful: "Registration successful. You're now logged in.",
+    cantRegisterWhileOffline: "You can't register while you're offline.",
+    pleaseSelectAPass: "Please select a pass.",
+    youOnlyCanAddPassesWhileOnline: "You only can add passes, when you are online.",
+    logoutWasSuccessful: "Logout was successful.",
+    logoutWasNotSuccessful: "Logout not successful.",
+    youCantLogoutWhileOffline: "Sorry, you can't logout while you're offline."
   }
 }

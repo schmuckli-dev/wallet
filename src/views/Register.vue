@@ -5,26 +5,26 @@
         <v-form @submit="register($event)" ref="formRegister" style="margin-left:auto;margin-right:auto;">
           <v-card class="form_card">
             <div style="width:100%;">
-              <h2>Register</h2>
+              <h2>{{ $t('login.register') }}</h2>
               <br>
               <v-text-field outline
                 v-model="Remail"
-                label="E-Mail" required
+                :label="$t('settings.email')" required
               ></v-text-field>
               <v-text-field outline
                 v-model="Rpassword"
                 type="password"
-                label="Password" required
+                :label="$t('settings.password')" required
               ></v-text-field>
               <v-text-field outline
                 v-model="RpasswordRepeat"
                 type="password"
-                label="Repeat password" required
+                :label="$t('login.passwordRepeat')" required
               ></v-text-field>
             </div>
             <v-card-actions right>
-              <v-btn type="submit" flat>Register</v-btn>
-              <v-btn type="button" @click="goToLogin" flat>Already have an account?</v-btn>
+              <v-btn type="submit" flat>{{ $t('login.register') }}</v-btn>
+              <v-btn type="button" @click="goToLogin" flat>{{ $t('login.alreadyHaveAnAccount') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -64,14 +64,14 @@ export default {
             firebase.auth().createUserWithEmailAndPassword(this.Remail.trim(), this.Rpassword).then(
               function(){
                 global_this.$router.replace('home');
-                StoreMod.showNotification("Registration successful. You're now logged in.");
+                StoreMod.showNotification("notification.registrationSuccessful");
               },
               function(error){
                 StoreMod.showNotification(error);
               }
             );
           } else {
-            StoreMod.showNotification("You can't register while you're offline.");
+            StoreMod.showNotification("notification.cantRegisterWhileOffline");
           }
         }
       }

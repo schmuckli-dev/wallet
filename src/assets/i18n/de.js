@@ -50,5 +50,15 @@ export default {
     upload: "Hochladen",
     uploadDescription: "Lade eine .pkpass Datei hoch.",
     addToWallet: "Zum Wallet hinzufügen"
+  },
+  login: {
+    login: "Anmelden",
+    register: "Registrieren",
+    passwordRepeat: "Passwort wiederholen",
+    dontHaveAnAccount: "Noch kein Konto?",
+    alreadyHaveAnAccount: "Schon ein Konto?"
+  },
+  notification: {
+    loginSuccessful: "Anmeldung erfolgreich."
   }
 }

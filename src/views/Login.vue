@@ -5,21 +5,21 @@
         <v-form @submit="login($event)" ref="formLogin" style="margin-left:auto;margin-right:auto;">
           <v-card class="form_card">
             <div style="width:100%;">
-              <h2>Login</h2>
+              <h2>{{ $t('login.login') }}</h2>
               <br>
               <v-text-field outline
                 v-model="email"
-                label="E-Mail" required
+                :label="$t('settings.email')" required
               ></v-text-field>
               <v-text-field outline
                 v-model="password"
                 type="password"
-                label="Password" required
+                :label="$t('settings.password')" required
               ></v-text-field>
             </div>
             <v-card-actions right>
-              <v-btn type="submit" flat>Login</v-btn>
-              <v-btn type="button" @click="goToRegister" flat>Don't have an account?</v-btn>
+              <v-btn type="submit" flat>{{ $t('login.login') }}</v-btn>
+              <v-btn type="button" @click="goToRegister" flat>{{ $t('login.dontHaveAnAccount') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -58,14 +58,14 @@ export default {
           firebase.auth().signInWithEmailAndPassword(this.email.trim(), this.password).then(
             function(){
               global_this.$router.replace('home');
-              StoreMod.showNotification("Login successful.");
+              StoreMod.showNotification("notification.loginSuccessful");
             },
             function(){
-              StoreMod.showNotification("The email or password is invalid.");
+              StoreMod.showNotification("notification.emailOrPasswordIsWrong");
             }
           );
         } else {
-          StoreMod.showNotification("You can't login while you're offline.");
+          StoreMod.showNotification("notification.youCantLoginWhileOffline");
         }
       }
       return false;

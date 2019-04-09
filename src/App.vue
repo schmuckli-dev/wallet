@@ -44,7 +44,7 @@
     <v-snackbar
       v-model="notification"
     >
-      {{ notification_text }}
+      {{ $t(notification_text) }}
       <v-btn
         color="#9D6447"
         flat
@@ -82,7 +82,7 @@ export default {
     /* Notificatio End */
     userName(){
       if(!this.isLoggedIn){
-        return "Not logged in";
+        return "";
       }
       if(this.currentUser.displayName == undefined){
         return this.currentUser.email;
@@ -102,7 +102,7 @@ export default {
       if(navigator.onLine){
         this.$router.replace("new");
       } else {
-        StoreMod.showNotification("You only can add passes, when you are online.");
+        StoreMod.showNotification("notification.youOnlyCanAddPassesWhileOnline");
       }
     },
     logout(){
@@ -110,12 +110,12 @@ export default {
         var global_this = this;
         firebase.auth().signOut().then(function() {
           global_this.$router.replace("login");
-          StoreMod.showNotification("Logout was successful.");
-        }, function(error) {
-          StoreMod.showNotification("Logout not successful. " + error.getMessage());
+          StoreMod.showNotification("notification.logoutWasSuccessful");
+        }, function() {
+          StoreMod.showNotification("notification.logoutWasNotSuccessful");
         });
       } else {
-        StoreMod.showNotification("Sorry, you can't logout while you're offline.");
+        StoreMod.showNotification("notification.youCantLogoutWhileOffline");
       }
     }
   },
