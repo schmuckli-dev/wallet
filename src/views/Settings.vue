@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
+    <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> {{ $t("general.back") }}</v-btn>
     <h1>{{ $t("settings.settings") }}</h1>
     <h3>{{ $t("settings.profile") }}</h3>
     <v-form ref="settings" @submit="save($event)">

@@ -13,8 +13,8 @@
       <p style="display:block;">No passes stored yet.<br>Add one with the button at the bottom right.</p>
     </v-flex>
     <v-flex xs12 sm4 md3 v-for="(pass, index) in passes" :key="pass.id">
-      <h3 v-if="index == 0">{{ getMonthYear(pass.date) }}</h3>
-      <h3 v-if="passes[index-1] && getMonthYear(pass.date) !== getMonthYear(passes[index-1].date)">{{ getMonthYear(pass.date) }}</h3>
+      <h3 v-if="index == 0">{{ $t(getMonth(pass.date)) + " " + getYear(pass.date) }}</h3>
+      <h3 v-if="passes[index-1] && getMonthYear(pass.date) !== getMonthYear(passes[index-1].date)">{{ $t(getMonth(pass.date)) + " " + getYear(pass.date) }}</h3>
       <h3 v-if="passes[index-1] && getMonthYear(pass.date) === getMonthYear(passes[index-1].date)" class="hidden-xs-only">&nbsp;</h3>
       <Pass
       :index="index"
@@ -34,7 +34,7 @@
 
 <script>
 import { StoreMod } from "../store.js";
-import { getMonthYear } from "../assets/js/date.js";
+import { getMonth, getYear } from "../assets/js/date.js";
 import Pass from "../components/Pass";
 import firebase from "firebase";
 
@@ -85,7 +85,13 @@ export default {
       }
     },
     getMonthYear(timestamp){
-      return getMonthYear(timestamp);
+      return getMonth(timestamp) + " " + getYear(timestamp);
+    },
+    getMonth(timestamp){
+      return getMonth(timestamp);
+    },
+    getYear(timestamp){
+      return getYear(timestamp);
     }
   },
   components: {

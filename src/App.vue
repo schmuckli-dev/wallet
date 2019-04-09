@@ -21,11 +21,11 @@
         <v-list v-if="isLoggedIn">
           <v-list-tile @click="openSettings">
             <v-icon style="margin-right:10px;">settings</v-icon>
-            <v-list-tile-title>Settings</v-list-tile-title>
+            <v-list-tile-title>{{ $t("settings.settings") }}</v-list-tile-title>
           </v-list-tile>
           <v-list-tile @click="logout">
             <v-icon style="margin-right:10px;">power_settings_new</v-icon>
-            <v-list-tile-title>Logout</v-list-tile-title>
+            <v-list-tile-title>{{ $t("app.logout") }}</v-list-tile-title>
           </v-list-tile>
         </v-list>
       </v-menu>

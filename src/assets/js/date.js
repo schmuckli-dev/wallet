@@ -1,16 +1,16 @@
 const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  "months.january",
+  "months.february",
+  "months.march",
+  "months.april",
+  "months.may",
+  "months.june",
+  "months.july",
+  "months.august",
+  "months.september",
+  "months.october",
+  "months.november",
+  "months.december"
 ];
 
 export function getFormattedDate(date_string){
@@ -50,10 +50,18 @@ export function getFormattedJustTime(date_string){
   }
 }
 
-export function getMonthYear(date_string){
+export function getMonth(date_string){
   var date = new Date(date_string);
   if(date instanceof Date && !isNaN(date)){
-    return MONTHS[date.getMonth()] + " " + date.getFullYear();
+    return MONTHS[date.getMonth()];
+  } else {
+    return "";
+  }
+}
+export function getYear(date_string){
+  var date = new Date(date_string);
+  if(date instanceof Date && !isNaN(date)){
+    return date.getFullYear();
   } else {
     return "";
   }
