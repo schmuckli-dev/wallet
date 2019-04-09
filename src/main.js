@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
 import './plugins/vuetify'
-import { translations } from './translation.js';
+import { translations, getLanguage } from './translation.js';
 import App from './App.vue'
 import router from './router';
 import firebase from "firebase";
@@ -21,7 +21,8 @@ firebase.initializeApp({
 });
 
 const i18n = new VueI18n({
-  locale: 'en', // set locale
+  locale: getLanguage(), // set locale
+  fallbackLocale: 'en',
   messages: translations // set locale messages
 });
 

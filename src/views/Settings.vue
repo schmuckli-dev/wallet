@@ -1,54 +1,71 @@
 <template>
   <v-container>
     <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> back</v-btn>
-    <h1>Settings</h1>
+    <h1>{{ $t("settings.settings") }}</h1>
     <h3>{{ $t("settings.profile") }}</h3>
     <v-form ref="settings" @submit="save($event)">
       <v-layout row wrap>
         <v-flex xs12 sm6 md3>
           <v-text-field outline
-            :label='$t("settings.displayName")'
+            :label="$t('settings.displayName')"
             v-model="displayName"
           ></v-text-field>
         </v-flex>
         <v-flex xs12 sm6 md3>
           <v-text-field
-            label="E-Mail"
+            :label="$t('settings.email')"
             disabled
             outline
             v-model="email"
           ></v-text-field>
         </v-flex>
       </v-layout>
-      <v-btn type="submit">Save</v-btn>
+      <v-btn type="submit">{{ $t('general.save') }}</v-btn>
     </v-form>
-    <h3>Update password</h3>
+    <h3>{{ $t('settings.password') }}</h3>
     <v-form ref="password" @submit="updatePassword($event)">
       <v-layout row wrap>
         <v-flex xs12 sm6 md3>
           <v-text-field outline
-            label="New password"
+            :label="$t('settings.newPassword')"
             type="password"
             v-model="newPassword"
           ></v-text-field>
         </v-flex>
         <v-flex xs12 sm6 md3>
           <v-text-field
-            label="Repeat new password"
+            :label="$t('settings.newPasswordRepeat')"
             type="password"
             outline
             v-model="newPasswordRepeat"
           ></v-text-field>
         </v-flex>
       </v-layout>
-      <v-btn type="submit">Set password</v-btn>
+      <v-btn type="submit">{{ $t('general.save') }}</v-btn>
+    </v-form>
+    <h3>{{ $t('settings.language') }}</h3>
+    <v-form ref="language" @submit="updateLanguage($event)">
+      <v-layout row wrap>
+        <v-flex xs12 sm6 md3>
+          <v-select
+            :items="supportedLanguages"
+            item-text="value"
+            item-value="key"
+            v-model="language"
+            :label="$t('settings.language')"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <v-btn type="submit">{{ $t('general.save') }}</v-btn>
     </v-form>
   </v-container>
 </template>
 
 <script>
 import { StoreMod } from "./../store";
+import { getLanguage } from "./../translation";
 import firebase from "firebase";
+import cookies from 'js-cookie';
 
 export default {
   name: "Settings",
@@ -57,7 +74,16 @@ export default {
       email: firebase.auth().currentUser.email,
       displayName: firebase.auth().currentUser.displayName,
       newPassword: "",
-      newPasswordRepeat: ""
+      newPasswordRepeat: "",
+      language: getLanguage()
+    }
+  },
+  computed: {
+    supportedLanguages(){
+      return [
+        {key: 'en', value: 'English'},
+        {key: 'de', value: 'Deutsch'}
+      ]
     }
   },
   methods: {
@@ -91,6 +117,16 @@ export default {
       } else {
         StoreMod.showNotification("The passwords does not match.");
       }
+    },
+    updateLanguage(event){
+      event.preventDefault();
+
+      cookies.set("lang", this.language);
+
+      StoreMod.showNotification("The language has been updated.");
+      setTimeout(function(){
+        window.location.reload(); //Refresh the page
+      }, 2000);
     }
   }
 }
