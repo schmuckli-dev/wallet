@@ -38,7 +38,7 @@
                       {{ data.type }}
                     </v-flex>
                   </v-layout>
-                  <div style="text-align:center;margin-top:40px;">
+                  <div style="text-align:center;margin-top:40px;" v-if="barcode">
                     <canvas id="barcode" style="width:200px;"></canvas>
                   </div>
                   <v-layout style="margin-top:20px;" row wrap>
@@ -189,6 +189,7 @@ export default {
       data: {},
       show: false,
       frontCardSide: true,
+      barcode: true,
       dialogDelete: false,
       //Edit dialog
       dialogEdit: false,
@@ -348,23 +349,25 @@ export default {
       });
     },
     renderQrCode(){
-      var type = "qrcode";
-      switch(this.data.barcode.format){
-        case "PKBarcodeFormatAztec":
-          type = "azteccode"
-          break;
-        case "PKBarcodeFormatQR":
-          type = "qrcode";
-          break;
-        case "PKBarcodeFormatPDF417":
-          type = "pdf417"
-          break;
-        default:
-          //Detect new formats
-          //console.log(this.data.barcode.format);
-          break;
-      }
-      bwipjs('barcode', {
+      var global_this = this;
+      if(this.data.barcode !== ""){
+        var type = "qrcode";
+        switch(this.data.barcode.format){
+          case "PKBarcodeFormatAztec":
+            type = "azteccode"
+            break;
+          case "PKBarcodeFormatQR":
+            type = "qrcode";
+            break;
+          case "PKBarcodeFormatPDF417":
+            type = "pdf417"
+            break;
+          default:
+            //Detect new formats
+            //console.log(this.data.barcode.format);
+            break;
+        }
+        bwipjs('barcode', {
             bcid:        type,       // Barcode type
             text:        this.data.barcode.message,    // Text to encode
             scale:       3,               // 3x scaling factor
@@ -374,8 +377,13 @@ export default {
         }, function (err) {
             if (err) {
               StoreMod.showNotification("There was an error while creating the barcode");
+            } else {
+              global_this.barcode = true;
             }
         });
+      } else {
+        this.barcode = false;
+      }
     },
     getKeyOrLabel(field){
       if(field.label){

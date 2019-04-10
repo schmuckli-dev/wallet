@@ -35,7 +35,7 @@
       </v-card-title>
       <v-card-actions v-if="passData !== undefined && !isSavingPass">
         <v-btn v-if="!isBackgroundLight" @click="addToWallet" dark flat>{{ $t("upload.addToWallet") }}</v-btn>
-        <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>{{ $t("detail.addToWallet") }}</v-btn>
+        <v-btn v-if="isBackgroundLight" @click="addToWallet" light flat>{{ $t("upload.addToWallet") }}</v-btn>
 
         <v-btn v-if="!isBackgroundLight" @click="resetPassData" dark flat>{{ $t("general.cancel") }}</v-btn>
         <v-btn v-if="isBackgroundLight" @click="resetPassData" light flat>{{ $t("general.cancel") }}</v-btn>
@@ -158,6 +158,13 @@ export default{
       } catch (e){
         return "";
       }
+    },
+    barcode(){
+      if(this.passData.barcode){
+        return this.passData.barcode;
+      } else {
+        return "";
+      }
     }
   },
   methods: {
@@ -177,7 +184,7 @@ export default{
         foregroundColor: this.passData.foregroundColor,
         organization: this.passData.organizationName,
         fields: this.fields,
-        barcode: this.passData.barcode
+        barcode: this.barcode
       };
 
       var realDBRef = firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes").push();
