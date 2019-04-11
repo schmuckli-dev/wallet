@@ -225,18 +225,6 @@ export default{
               case 'logo.png':
                 global_this.handleLogo(zip, zipEntry[0]);
                 break;
-
-            /*case 'thumbnail.png':
-              handleForegroundImage(zip, zipEntry.name, $('.primaryFields'));
-              break;
-
-            case 'background.png':
-              handleBackgroundImage(zip, zipEntry.name, $pass.find('.side.front'));
-              break;
-
-            case 'strip.png':
-              handleBackgroundImage(zip, zipEntry.name, $pass.find('.primaryFields'));
-              break;*/
             }
           });
         }, function () {
