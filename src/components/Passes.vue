@@ -10,7 +10,7 @@
       <v-icon style="display:block;font-size:100px;color:black;">inbox</v-icon>
     </v-flex>
     <v-flex xs12 style="text-align:center;" v-if="passes.length === 0 && loaded">
-      <p style="display:block;">No passes stored yet.<br>Add one with the button at the bottom right.</p>
+      <p style="display:block;">{{ $t("app.noPassesStoredYet") }}<br>{{ $t("app.addOneWithTheButtonAtTheBottomRight") }}</p>
     </v-flex>
     <v-flex xs12 sm4 md3 v-for="(pass, index) in passes" :key="pass.id">
       <h3 v-if="index == 0">{{ $t(getMonth(pass.date)) + " " + getYear(pass.date) }}</h3>

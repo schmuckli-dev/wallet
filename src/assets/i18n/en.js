@@ -13,7 +13,9 @@ export default {
   app: {
     logout: "Logout",
     showArchivedPasses: "Show archived passes",
-    showCurrentPasses: "Show current passes"
+    showCurrentPasses: "Show current passes",
+    noPassesStoredYet: "No passes stored yet.",
+    addOneWithTheButtonAtTheBottomRight: "Add one with the button at the bottom right."
   },
   months: {
     january: "January",

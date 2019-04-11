@@ -13,7 +13,9 @@ export default {
   app: {
     logout: "Ausloggen",
     showArchivedPasses: "Archivierte Karten",
-    showCurrentPasses: "Aktuelle Karten"
+    showCurrentPasses: "Aktuelle Karten",
+    noPassesStoredYet: "Keine Karten gefunden.",
+    addOneWithTheButtonAtTheBottomRight: "Füge eine Karte mit dem Button unten rechts hinzu."
   },
   months: {
     january: "Januar",
