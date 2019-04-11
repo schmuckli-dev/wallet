@@ -5,7 +5,10 @@ export default {
     cancel: "Cancel",
     title: "Title",
     date: "Date",
-    time: "Time"
+    time: "Time",
+    close: "Close",
+    thisIsAProjectBy: "This is a project by",
+    viewOnGithub: "View on Github"
   },
   app: {
     logout: "Logout",

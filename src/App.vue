@@ -34,9 +34,9 @@
     <v-content>
       <router-view/>
       <footer>
-        <p>This is a project by
+        <p>{{ $t("general.thisIsAProjectBy") }}
           <a href="https://www.schmuckli.net/" target="_blank">Julian Schmuckli</a> |
-          <a href="https://github.com/julianschmuckli/wallet" target="_blank">View on Github</a></p>
+          <a href="https://github.com/julianschmuckli/wallet" target="_blank">{{ $t("general.viewOnGithub") }}</a></p>
       </footer>
     </v-content>
 
@@ -50,7 +50,7 @@
         flat
         @click="notification = ''"
       >
-        Close
+        {{ $t("general.close") }}
       </v-btn>
     </v-snackbar>
     <v-btn fab dark color="#9D6447" v-if="isLoggedIn" fixed right bottom>
