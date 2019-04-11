@@ -259,7 +259,7 @@ export default {
 
       this.id = Store.currentPass;
       if (this.id === "") { //Redirect to home if loaded without id
-        StoreMod.showNotification("Please select a pass.");
+        StoreMod.showNotification("notification.pleaseSelectAPass");
         this.$router.replace("home");
       } else {
         try{
@@ -273,7 +273,7 @@ export default {
 
           global_this.renderQrCode();
         }catch(e){
-          StoreMod.showNotification("This pass is not available.");
+          StoreMod.showNotification("notification.thisPassIsNotAvailable");
           global_this.$router.replace("home");
         }
       }
@@ -282,7 +282,7 @@ export default {
       if (navigator.onLine) {
         this.dialogEdit = true;
       } else {
-        StoreMod.showNotification("You can't edit a pass while you are offline.");
+        StoreMod.showNotification("notification.youCantEditPassesWhileYouAreOffline");
       }
     },
     save(){
@@ -293,13 +293,13 @@ export default {
       var title = this.dialogEditTitle;
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"date": time, "title": title}, function (error) {
         if (error) {
-          StoreMod.showNotification("There was an error while updating the pass.");
+          StoreMod.showNotification("notification.thereWasAnErrorWhileEditingThePass");
         } else {
           //Update fields directly for card
           global_this.data.date = time;
           global_this.data.title = title;
 
-          StoreMod.showNotification("The pass has been updated.");
+          StoreMod.showNotification("notification.thePassHasBeenUpdated");
           global_this.dialogEdit = false;
         }
       });
@@ -309,9 +309,9 @@ export default {
       //Delete the pass
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"archive": true}, function (error) {
         if (error) {
-          StoreMod.showNotification("There was an error while archiving the pass.");
+          StoreMod.showNotification("notification.thereWasAnErrorWhileArchivingThePass");
         } else {
-          StoreMod.showNotification("The pass has been archived.");
+          StoreMod.showNotification("notification.thePassHasBeenArchived");
           global_this.$router.replace("home");
         }
       });
@@ -321,9 +321,9 @@ export default {
       //Delete the pass
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).update({"archive": null}, function (error) {
         if (error) {
-          StoreMod.showNotification("There was an error while archiving the pass.");
+          StoreMod.showNotification("notification.thereWasAnErrorWhileUnarchivingThePass");
         } else {
-          StoreMod.showNotification("The pass has been unarchived.");
+          StoreMod.showNotification("notification.thePassHasBeenUnarchived");
           global_this.$router.replace("archive");
         }
       });
@@ -332,7 +332,7 @@ export default {
       if(navigator.onLine){
         this.dialogDelete = true;
       } else {
-        StoreMod.showNotification("You can't delete a pass while you're offline.");
+        StoreMod.showNotification("notification.youCantDeletePassesWhileYouAreOffline");
       }
     },
     deleteConfirm(){
@@ -341,9 +341,9 @@ export default {
       //Delete the pass
       firebase.database().ref('users/' + firebase.auth().currentUser.uid + "/passes/" + this.data.id).set(null, function (error) {
         if (error) {
-          StoreMod.showNotification("There was an error while deleting the pass.");
+          StoreMod.showNotification("notification.thereWasAnErrorWhileDeletingThePass");
         } else {
-          StoreMod.showNotification("The pass has been deleted.");
+          StoreMod.showNotification("notification.thePassHasBeenDeleted");
           global_this.$router.replace("home");
         }
       });
@@ -376,7 +376,7 @@ export default {
             textxalign:  'center',        // Always good to set this
         }, function (err) {
             if (err) {
-              StoreMod.showNotification("There was an error while creating the barcode");
+              StoreMod.showNotification("notification.thereWasAnErrorWhileCreatingTheBarcode");
             } else {
               global_this.barcode = true;
             }

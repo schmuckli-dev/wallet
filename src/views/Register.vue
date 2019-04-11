@@ -73,6 +73,8 @@ export default {
           } else {
             StoreMod.showNotification("notification.cantRegisterWhileOffline");
           }
+        } else {
+          StoreMod.showNotification("notification.thePasswordsDoesNotMatch");
         }
       }
     },

@@ -98,9 +98,9 @@ export default {
       user.updateProfile({
         displayName: this.displayName,
       }).then(function() {
-        StoreMod.showNotification("Profile data saved");
-      }).catch(function(error) {
-        StoreMod.showNotification("Error while saving profile: " + error);
+        StoreMod.showNotification("notification.theProfileHasBeenSaved");
+      }).catch(function() {
+        StoreMod.showNotification("notification.thereWasAnErrorWhileSavingTheProfile");
       });
     },
     updatePassword(event){
@@ -110,20 +110,20 @@ export default {
 
       if(this.newPassword === this.newPasswordRepeat){
         user.updatePassword(this.newPassword).then(function() {
-          StoreMod.showNotification("The password has been set.");
+          StoreMod.showNotification("notification.thePasswordHasBeenSet");
         }).catch(function(error) {
           StoreMod.showNotification(error);
         });
       } else {
-        StoreMod.showNotification("The passwords does not match.");
+        StoreMod.showNotification("notification.thePasswordsDoesNotMatch");
       }
     },
     updateLanguage(event){
       event.preventDefault();
 
-      cookies.set("lang", this.language);
+      cookies.set("lang", this.language, { expires: 365 * 10 });
 
-      StoreMod.showNotification("The language has been updated.");
+      StoreMod.showNotification("notification.theLanguageHasBeenUpdated");
       setTimeout(function(){
         window.location.reload(); //Refresh the page
       }, 2000);

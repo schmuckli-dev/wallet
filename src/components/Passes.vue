@@ -81,7 +81,7 @@ export default {
       } else {
         global_this.passes = JSON.parse(window.localStorage.getItem("passes"));
         global_this.loaded = true;
-        StoreMod.showNotification("Loading offline passes.");
+        StoreMod.showNotification("notification.loadingOfflinePasses");
       }
     },
     getMonthYear(timestamp){

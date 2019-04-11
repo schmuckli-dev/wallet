@@ -21,7 +21,7 @@ export default {
       if (navigator.onLine) {
         this.$router.replace("archive");
       } else {
-        StoreMod.showNotification("You can't visit the archive while you are offline.");
+        StoreMod.showNotification("notification.youCantVisitTheArchiveWhileYouAreOffline");
       }
     }
   }

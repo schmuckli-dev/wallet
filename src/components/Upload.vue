@@ -192,7 +192,7 @@ export default{
         saveData, function(error) {
         if (error) {
           global_this.isSavingPass = false;
-          StoreMod.showNotification("There was an error while saving the pass: " + error);
+          StoreMod.showNotification("notification.thereWasAnErrorWhileSavingThePass");
         } else {
           //Store the untouched .pkpass file to the storage bucket.
           var storageFile = firebase.storage().ref("users/" + firebase.auth().currentUser.uid + "/passes/" + realDBRef.key + ".pkpass");
@@ -200,7 +200,7 @@ export default{
             global_this.isSavingPass = false;
             global_this.$router.replace("home");
             global_this.resetPassData();
-            StoreMod.showNotification("The pass has been saved.");
+            StoreMod.showNotification("notification.passHasBeenSaved");
           });
         }
       });
@@ -240,7 +240,7 @@ export default{
             }
           });
         }, function () {
-          StoreMod.showNotification("Cannot upload this file.");
+          StoreMod.showNotification("notification.cannotUploadThisFile");
         });
       }
     },
@@ -256,7 +256,7 @@ export default{
       zip.file(name).async('base64').then(function success(content) {
         global_this.current_logo = content;
       }, function error() {
-          StoreMod.showNotification("There was a problem with loading the logo of the pass.");
+          StoreMod.showNotification("notification.thereWasAProblemWhileLoadingTheLogo");
       });
     }
   }
