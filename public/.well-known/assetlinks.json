@@ -1,0 +1,9 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "dev.schmuckli.wallet",
+    "sha256_cert_fingerprints":
+    ["8A:7A:F2:D0:BF:BF:BD:42:12:B1:88:1A:01:20:D4:03:7E:12:F9:59:AC:1B:D3:51:4A:5D:04:1D:15:C9:B2:6D"]
+  }
+}]
