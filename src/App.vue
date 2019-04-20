@@ -130,6 +130,7 @@ export default {
 
 <style>
 @import "./assets/css/layout.css";
+@import "./assets/css/animate.css";
 
 footer{
   text-align:center;
