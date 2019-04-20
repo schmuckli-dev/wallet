@@ -17,7 +17,7 @@
         </v-list-tile-avatar>
         <v-list-tile-content>
           <v-list-tile-title>Offline</v-list-tile-title>
-          <v-list-tile-sub-title>Thanks to the power of progessive web apps, you can also access your current passes even without an active internet connection.</v-list-tile-sub-title>
+          <v-list-tile-sub-title>Thanks to the power of progressive web apps, you can also access your current passes even without an active internet connection.</v-list-tile-sub-title>
         </v-list-tile-content>
       </v-list-tile>
       <v-list-tile>
