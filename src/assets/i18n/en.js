@@ -8,7 +8,8 @@ export default {
     time: "Time",
     close: "Close",
     thisIsAProjectBy: "This is a project by",
-    viewOnGithub: "View on Github"
+    viewOnGithub: "View on Github",
+    moreAppsOn: "More apps on"
   },
   app: {
     logout: "Logout",

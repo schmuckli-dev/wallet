@@ -39,9 +39,8 @@
         <router-view/>
       </transition>
       <footer>
-        <p>{{ $t("general.thisIsAProjectBy") }}
-          <a href="https://www.schmuckli.net/" target="_blank">Julian Schmuckli</a> |
-          <a href="https://github.com/julianschmuckli/wallet" target="_blank">{{ $t("general.viewOnGithub") }}</a></p>
+        <p>{{ $t("general.moreAppsOn") }}
+          <a href="https://www.schmuckli.dev/" target="_blank">schmuckli.dev</a></p>
       </footer>
     </v-content>
 
