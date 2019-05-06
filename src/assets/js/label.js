@@ -27,6 +27,12 @@ const labels = {
   pk_check_out: "Check-Out",
   pk_customer_service_email: "Customer service email",
   passbook_mybooking_cta_01: "MyBooking",
+  primary_a: "Origin",
+  primary_b: "Destination",
+  secondary_d: "Class",
+  auxiliary_a: "Zones",
+  auxiliary_b: "Type",
+  auxiliary_c: "Valid until",
   KEY_PRIMERY: "Name",
   KEY_SECONDARY_TICKETTYPENAME: "Ticket type",
 }
