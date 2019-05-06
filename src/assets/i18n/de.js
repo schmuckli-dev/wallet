@@ -53,7 +53,8 @@ export default {
     archive: "Archivieren",
     delete: "Löschen",
     unarchive: "Wiederherstellen",
-    editDescriptionDateTime: "Du kannst hier das Datum und die Zeit des Passes/Karte ändern, falls dieses nicht richtig vorgeschlagen wurde."
+    editDescriptionDateTime: "Du kannst hier das Datum und die Zeit des Passes/Karte ändern, falls dieses nicht richtig vorgeschlagen wurde.",
+    download: "Herunterladen"
   },
   upload: {
     uploadNewPass: "Einen neuen Pass/Karte hochladen",
@@ -104,6 +105,7 @@ export default {
     thePasswordsDoesNotMatch: "Die Passwörter stimmen nicht überein.",
     theLanguageHasBeenUpdated: "Die Sprache wurde geändert.",
     thereWasAnError: "Es ist ein Fehler aufgetreten.",
-    migrationSuccessful: "Die Migration war erfolgreich."
+    migrationSuccessful: "Die Migration war erfolgreich.",
+    downloading: "Lädt herunter..."
   }
 }

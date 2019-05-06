@@ -64,10 +64,13 @@
                 <v-icon style="font-size:20px;color:black" v-if="isBackgroundLight" @click="frontCardSide = !frontCardSide">loop</v-icon>
               </div>
             </v-card-title>
-            <v-card-actions style="float:right;">
+            <v-card-actions style="float:right;" v-if="frontCardSide">
               <v-btn v-if="!data.archive" @click="archivePass" light flat><v-icon style="margin-right:10px;">archive</v-icon> {{ $t("detail.archive") }}</v-btn>
               <v-btn v-if="data.archive" @click="unarchivePass" light flat><v-icon style="margin-right:10px;">unarchive</v-icon> {{ $t("detail.unarchive") }}</v-btn>
               <v-btn @click="deletePass" light flat><v-icon style="margin-right:10px;">delete</v-icon> {{ $t("detail.delete") }}</v-btn>
+            </v-card-actions>
+            <v-card-actions style="float:right;" v-if="!frontCardSide">
+              <v-btn @click="downloadPass" light flat><v-icon style="margin-right:10px;">cloud_download</v-icon> {{ $t("detail.download") }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -334,6 +337,14 @@ export default {
       } else {
         StoreMod.showNotification("notification.youCantDeletePassesWhileYouAreOffline");
       }
+    },
+    downloadPass(){
+      firebase.storage().ref("users/" + firebase.auth().currentUser.uid + "/passes/" + this.data.id + ".pkpass").getDownloadURL().then(function(url) {
+        StoreMod.showNotification("notification.downloading");
+        window.open(url, "_blank");
+      }).catch(function() {
+        StoreMod.showNotification("notification.thereWasAnError");
+      });
     },
     deleteConfirm(){
       this.dialogDelete = false;

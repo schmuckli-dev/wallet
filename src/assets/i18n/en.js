@@ -52,7 +52,8 @@ export default {
     archive: "Archive",
     delete: "Delete",
     unarchive: "Unarchive",
-    editDescriptionDateTime: "You can change here the date and time of the passport, if it has not proposed correctly."
+    editDescriptionDateTime: "You can change here the date and time of the passport, if it has not proposed correctly.",
+    download: "Download"
   },
   upload: {
     uploadNewPass: "Upload a new pass",
@@ -103,6 +104,7 @@ export default {
     thePasswordsDoesNotMatch: "The passwords does not match.",
     theLanguageHasBeenUpdated: "The language has been updated.",
     thereWasAnError: "There was an error.",
-    migrationSuccessful: "The migration was successful."
+    migrationSuccessful: "The migration was successful.",
+    downloading: "Downloading..."
   }
 }
