@@ -40,7 +40,11 @@ export default {
     password: "Passwort",
     newPassword: "Neues Passwort",
     newPasswordRepeat: "Neues Passwort wiederholen",
-    language: "Sprache"
+    language: "Sprache",
+    migrate: "Migrieren",
+    migrateNewAccount: "Zu einem neuen Account migrieren",
+    migrateNewAccountDescription: "Wenn du diesen Account auch auf anderen Geräten benutzen möchtest, dann kannst du hier ein Login erstellen."
+
   },
   detail: {
     edit: "Bearbeiten",
@@ -62,7 +66,8 @@ export default {
     register: "Registrieren",
     passwordRepeat: "Passwort wiederholen",
     dontHaveAnAccount: "Noch kein Konto?",
-    alreadyHaveAnAccount: "Schon ein Konto?"
+    alreadyHaveAnAccount: "Schon ein Konto?",
+    tryNow: "Jetzt probieren ohne Login"
   },
   notification: {
     loginSuccessful: "Anmeldung erfolgreich.",
@@ -97,6 +102,8 @@ export default {
     thereWasAnErrorWhileSavingTheProfile: "Beim Speichern des Profiles ist ein Fehler aufgetreten.",
     thePasswordHasBeenSet: "Das neue Passwort wurde gespeichert.",
     thePasswordsDoesNotMatch: "Die Passwörter stimmen nicht überein.",
-    theLanguageHasBeenUpdated: "Die Sprache wurde geändert."
+    theLanguageHasBeenUpdated: "Die Sprache wurde geändert.",
+    thereWasAnError: "Es ist ein Fehler aufgetreten.",
+    migrationSuccessful: "Die Migration war erfolgreich."
   }
 }

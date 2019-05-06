@@ -40,7 +40,10 @@ export default {
     password: "Password",
     newPassword: "New password",
     newPasswordRepeat: "New password repeat",
-    language: "Language"
+    language: "Language",
+    migrate: "Migrate",
+    migrateNewAccount: "Migrate to a new account",
+    migrateNewAccountDescription: "To use this account also on other devices, you should create an account. Here you have the possibility to simply migrate to an email and password option."
   },
   detail: {
     edit: "Edit",
@@ -62,7 +65,8 @@ export default {
     register: "Register",
     passwordRepeat: "Repeat password",
     dontHaveAnAccount: "Don't have an account?",
-    alreadyHaveAnAccount: "Already have an account?"
+    alreadyHaveAnAccount: "Already have an account?",
+    tryNow: "Try now without login"
   },
   notification: {
     loginSuccessful: "Login successful.",
@@ -97,6 +101,8 @@ export default {
     thereWasAnErrorWhileSavingTheProfile: "There was an error while saving the profile.",
     thePasswordHasBeenSet: "The password has been set.",
     thePasswordsDoesNotMatch: "The passwords does not match.",
-    theLanguageHasBeenUpdated: "The language has been updated."
+    theLanguageHasBeenUpdated: "The language has been updated.",
+    thereWasAnError: "There was an error.",
+    migrationSuccessful: "The migration was successful."
   }
 }

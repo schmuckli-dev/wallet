@@ -30,5 +30,26 @@
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
+    <v-card-actions>
+      <v-btn flat @click="loginAnonymously">{{ $t("login.tryNow") }}</v-btn>
+    </v-card-actions>
   </v-card>
 </template>
+<script>
+import firebase from "firebase";
+import { StoreMod } from "../store";
+
+export default {
+  name: "FeatureCard",
+  methods: {
+    loginAnonymously(){
+      var global_this = this;
+      firebase.auth().signInAnonymously().then(function(){
+        global_this.$router.replace("home");
+      }).catch(function(err){
+        StoreMod.showNotification(global_this.$t("notification.thereWasAnError") + ": " + err.message);
+      });
+    }
+  }
+}
+</script>

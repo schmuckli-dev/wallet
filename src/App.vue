@@ -23,7 +23,7 @@
             <v-icon style="margin-right:10px;">settings</v-icon>
             <v-list-tile-title>{{ $t("settings.settings") }}</v-list-tile-title>
           </v-list-tile>
-          <v-list-tile @click="logout">
+          <v-list-tile v-if="!isAnonymous" @click="logout">
             <v-icon style="margin-right:10px;">power_settings_new</v-icon>
             <v-list-tile-title>{{ $t("app.logout") }}</v-list-tile-title>
           </v-list-tile>
@@ -88,11 +88,17 @@ export default {
       if(!this.isLoggedIn){
         return "";
       }
+      if(this.currentUser.isAnonymous){
+        return "Guest";
+      }
       if(this.currentUser.displayName == undefined){
         return this.currentUser.email;
       }else{
         return this.currentUser.displayName;
       }
+    },
+    isAnonymous(){
+      return this.currentUser.isAnonymous;
     },
     isLoggedIn(){
       return this.currentUser != undefined;

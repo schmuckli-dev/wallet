@@ -2,62 +2,89 @@
   <v-container>
     <v-btn @click="back" flat><v-icon>keyboard_arrow_left</v-icon> {{ $t("general.back") }}</v-btn>
     <h1>{{ $t("settings.settings") }}</h1>
-    <h3>{{ $t("settings.profile") }}</h3>
-    <v-form ref="settings" @submit="save($event)">
-      <v-layout row wrap>
-        <v-flex xs12 sm6 md3>
-          <v-text-field outline
-            :label="$t('settings.displayName')"
-            v-model="displayName"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs12 sm6 md3>
-          <v-text-field
-            :label="$t('settings.email')"
-            disabled
-            outline
-            v-model="email"
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
-      <v-btn type="submit">{{ $t('general.save') }}</v-btn>
-    </v-form>
-    <h3>{{ $t('settings.password') }}</h3>
-    <v-form ref="password" @submit="updatePassword($event)">
-      <v-layout row wrap>
-        <v-flex xs12 sm6 md3>
-          <v-text-field outline
-            :label="$t('settings.newPassword')"
-            type="password"
-            v-model="newPassword"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs12 sm6 md3>
-          <v-text-field
-            :label="$t('settings.newPasswordRepeat')"
-            type="password"
-            outline
-            v-model="newPasswordRepeat"
-          ></v-text-field>
-        </v-flex>
-      </v-layout>
-      <v-btn type="submit">{{ $t('general.save') }}</v-btn>
-    </v-form>
-    <h3>{{ $t('settings.language') }}</h3>
-    <v-form ref="language" @submit="updateLanguage($event)">
-      <v-layout row wrap>
-        <v-flex xs12 sm6 md3>
-          <v-select
-            :items="supportedLanguages"
-            item-text="value"
-            item-value="key"
-            v-model="language"
-            :label="$t('settings.language')"
-          ></v-select>
-        </v-flex>
-      </v-layout>
-      <v-btn type="submit">{{ $t('general.save') }}</v-btn>
-    </v-form>
+    <div v-if="!isAnonymous">
+      <h3>{{ $t("settings.profile") }}</h3>
+      <v-form ref="settings" @submit="save($event)">
+        <v-layout row wrap>
+          <v-flex xs12 sm6 md3>
+            <v-text-field outline
+              :label="$t('settings.displayName')"
+              v-model="displayName"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 md3>
+            <v-text-field
+              :label="$t('settings.email')"
+              disabled
+              outline
+              v-model="email"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-btn type="submit">{{ $t('general.save') }}</v-btn>
+      </v-form>
+      <h3>{{ $t('settings.password') }}</h3>
+      <v-form ref="password" @submit="updatePassword($event)">
+        <v-layout row wrap>
+          <v-flex xs12 sm6 md3>
+            <v-text-field outline
+              :label="$t('settings.newPassword')"
+              type="password"
+              v-model="newPassword"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 md3>
+            <v-text-field
+              :label="$t('settings.newPasswordRepeat')"
+              type="password"
+              outline
+              v-model="newPasswordRepeat"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-btn type="submit">{{ $t('general.save') }}</v-btn>
+      </v-form>
+      <h3>{{ $t('settings.language') }}</h3>
+      <v-form ref="language" @submit="updateLanguage($event)">
+        <v-layout row wrap>
+          <v-flex xs12 sm6 md3>
+            <v-select
+              :items="supportedLanguages"
+              item-text="value"
+              item-value="key"
+              v-model="language"
+              :label="$t('settings.language')"
+            ></v-select>
+          </v-flex>
+        </v-layout>
+        <v-btn type="submit">{{ $t('general.save') }}</v-btn>
+      </v-form>
+    </div>
+    <div v-else>
+      <h3>{{ $t("settings.migrateNewAccount") }}</h3>
+      <p>{{ $t("settings.migrateNewAccountDescription") }}</p>
+      <v-form ref="migrateAccount" @submit="migrateAccount($event)">
+        <v-layout row wrap>
+          <v-flex xs12 sm6 md3>
+            <v-text-field
+              :label="$t('settings.email')"
+              type="email"
+              outline
+              v-model="migrateEmail"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 sm6 md3>
+            <v-text-field
+              :label="$t('settings.password')"
+              type="password"
+              outline
+              v-model="migratePassword"
+            ></v-text-field>
+          </v-flex>
+        </v-layout>
+        <v-btn type="submit">{{ $t('settings.migrate') }}</v-btn>
+      </v-form>
+    </div>
   </v-container>
 </template>
 
@@ -75,7 +102,10 @@ export default {
       displayName: firebase.auth().currentUser.displayName,
       newPassword: "",
       newPasswordRepeat: "",
-      language: getLanguage()
+      language: getLanguage(),
+
+      migrateEmail: "",
+      migratePassword: ""
     }
   },
   computed: {
@@ -84,6 +114,9 @@ export default {
         {key: 'en', value: 'English'},
         {key: 'de', value: 'Deutsch'}
       ]
+    },
+    isAnonymous(){
+      return firebase.auth().currentUser.isAnonymous;
     }
   },
   methods: {
@@ -127,6 +160,23 @@ export default {
       setTimeout(function(){
         window.location.reload(); //Refresh the page
       }, 2000);
+    },
+    migrateAccount(event){
+      event.preventDefault();
+
+      var global_this = this;
+
+      if(this.isAnonymous){
+        var credential = firebase.auth.EmailAuthProvider.credential(this.migrateEmail, this.migratePassword);
+        firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential).then(function() {
+          StoreMod.showNotification(global_this.$t("notification.migrationSuccessful"));
+          setTimeout(function(){
+            location.reload();
+          }, 1500);
+        }, function(err) {
+          StoreMod.showNotification(global_this.$t("notification.thereWasAnError") + ": " + err.message);
+        });
+      }
     }
   }
 }
