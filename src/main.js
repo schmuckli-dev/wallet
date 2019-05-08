@@ -13,12 +13,16 @@ Vue.use(VueI18n);
 let app = '';
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDAE-MVcia1IvxvjzSTWf0LnmE28CMS3WY",                             // Auth / General Use
+  apiKey: "AIzaSyDAE-MVcia1IvxvjzSTWf0LnmE28CMS3WY",
   authDomain: "wallet-schmuckli.firebaseapp.com",
-  databaseURL: "https://wallet-schmuckli.firebaseio.com/",
+  databaseURL: "https://wallet-schmuckli.firebaseio.com",
+  projectId: "wallet-schmuckli",
   storageBucket: "wallet-schmuckli.appspot.com",
-  projectId: "wallet-schmuckli"
+  messagingSenderId: "690999163645",
+  appId: "1:690999163645:web:3164810de5f2f015"
 });
+
+firebase.performance();
 
 const i18n = new VueI18n({
   locale: getLanguage(), // set locale
