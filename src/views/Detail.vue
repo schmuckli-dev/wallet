@@ -39,7 +39,7 @@
                     </v-flex>
                   </v-layout>
                   <div style="text-align:center;margin-top:40px;" v-if="barcode">
-                    <canvas id="barcode" style="width:200px;"></canvas>
+                    <canvas id="barcode" style="width:250px;border: 20px solid white;border-radius:12px;"></canvas>
                   </div>
                   <v-layout style="margin-top:20px;" row wrap>
                     <v-flex xs6 v-for="field in frontFields" :key="field.key">
