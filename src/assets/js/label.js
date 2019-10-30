@@ -35,6 +35,13 @@ const labels = {
   auxiliary_c: "Valid until",
   KEY_PRIMERY: "Name",
   KEY_SECONDARY_TICKETTYPENAME: "Ticket type",
+  lastname_label: "Last name",
+  firstname_label: "First name",
+  coach_label: "Coach",
+  place_label: "Place",
+  trainnumber_label: "Trainnumber",
+  departure_label: "Departure",
+  arrival_label: "Arrival"
 }
 
 export function convertLabel(label){
