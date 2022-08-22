@@ -1,0 +1,32 @@
+name: 'Deployment'
+on:
+  push:
+    branches:    
+      - master  
+
+jobs:
+  deploy_app:
+    name: Deploy frontend app
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: 10
+    - name: Install dependencies
+      run: |
+        npm install
+    - name: Build page
+      run: |
+        npm run build
+    - name: Deploy frontend
+      uses: SamKirkland/FTP-Deploy-Action@4.3.1
+      with:
+        server: lava.metanet.ch
+        username: client_schmuckli_dev
+        password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        protocol: ftp
+        local-dir: dist/
+        server-dir: wallet/
